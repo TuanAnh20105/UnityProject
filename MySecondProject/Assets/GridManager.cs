@@ -10,16 +10,35 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Transform cam;
     private Dictionary<Vector2, Tile> tiles;
     public List<Vector2> listTiles = new List<Vector2>();
-    public int[,] matrix = new int[200, 200];
-    [TextArea(3, 5)]
+    public int[,] matrix = new int[30, 30];
+    [TextArea(10, 20)]
     public string weight;
     int id = 0;
     void Start()
     {
         GenerateGrid();
         Weight();
-        printMatrix();         
-    }  
+        UpdateObstacle(6);
+        UpdateObstacle(7);
+        UpdateObstacle(8);
+        UpdateObstacle(14);
+        UpdateObstacle(15);
+        UpdateObstacle(1);
+        UpdateObstacle(4);
+        UpdateObstacle(18);
+        UpdateObstacle(19);
+        UpdateObstacle(25);
+        UpdateObstacle(20);
+        UpdateObstacle(11);
+        UpdateObstacle(12);
+        UpdateObstacle(13);
+        UpdateObstacle(22);
+        printMatrix();
+      
+    }
+    public void Update()
+    {
+    }
     public void GenerateGrid()
     {
         tiles = new Dictionary<Vector2, Tile>();
@@ -42,14 +61,13 @@ public class GridManager : MonoBehaviour
     {
         for (int x = 0; x < id; x++)
         {
-            int i = x;
             for (int y = 0; y < id; y++)
             {
-                if (Vector2.Distance(listTiles[i], listTiles[y]) == 1)
+                if (Vector2.Distance(listTiles[x], listTiles[y]) >= 1 && Vector2.Distance(listTiles[x], listTiles[y])<=1.5)
                 {
                     matrix[x, y] = 1;
                 }
-                else
+                if (Vector2.Distance(listTiles[x], listTiles[y]) > 1)
                 {
                     matrix[x, y] = 0;
                 }
@@ -57,14 +75,76 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public Tile GetTileAtPos(Vector2 pos)
+    public void UpdateObstacle(int pos)
     {
+        for (int x = 0; x < id; x++)
         {
-            if (tiles.TryGetValue(pos, out var tile))
+            for (int y = 0; y < id; y++)
             {
-                return tile;
+                if (y == pos + 1 || y == pos - 1 || y == pos - hight || y == pos + hight)
+                {
+                    matrix[x, pos] = 0;
+                }           
             }
-            return null;
+            if (x == pos)
+            {
+                if(pos < hight)
+                {
+                    matrix[x, pos - 1] = 0;
+                    matrix[x, pos + 1] = 0;
+                    matrix[x, pos + hight] = 0;
+                }
+                else if (pos >=width * (hight - 1))
+                {
+                    matrix[x, pos - 1] = 0;
+                    matrix[x, pos + 1] = 0;
+                    matrix[x, pos - hight] = 0;
+                 
+                }
+                else
+                {
+                    matrix[x, pos - 1] = 0;
+                    matrix[x, pos + 1] = 0;
+                    matrix[x, pos - hight] = 0;
+                    matrix[x, pos + hight] = 0;
+                }
+
+            }
+        }
+    }
+    public void UpdateAfterDragObstacle(int pos)
+    {
+        for (int x = 0; x < id; x++)
+        {
+            for (int y = 0; y < id; y++)
+            {
+                if (y == pos + 1 || y == pos - 1 || y == pos - hight || y == pos + hight)
+                {
+                    matrix[ y,pos] = 1;
+                }
+            }
+            if (x == pos)
+            {
+                if(pos <hight)
+                {
+                    matrix[x, pos - 1] = 1;
+                    matrix[x, pos + 1] = 1;                   
+                    matrix[x, pos + hight] = 1;
+                }
+                else if(pos>hight)
+                {
+                    matrix[x, pos - 1] = 1;
+                    matrix[x, pos + 1] = 1;
+                    matrix[x, pos - hight] = 1;
+                }
+                else
+                {
+                     matrix[x, pos - 1] = 1;
+                     matrix[x, pos + 1] = 1;
+                     matrix[x, pos - hight] = 1;
+                     matrix[x, pos + hight] = 1;
+                }
+            }
         }
     }
     public void printMatrix()

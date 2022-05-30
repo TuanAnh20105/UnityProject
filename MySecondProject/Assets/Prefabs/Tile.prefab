@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4579869302750711746}
   m_Layer: 0
   m_Name: Tile
-  m_TagString: Untagged
+  m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,6 +102,7 @@ MonoBehaviour:
   id: 0
   hightLight: {fileID: 9045487529462485162}
   _renderer: {fileID: 4455110089231721664}
+  managerMove: {fileID: 0}
 --- !u!61 &2179344222970437192
 BoxCollider2D:
   m_ObjectHideFlags: 0

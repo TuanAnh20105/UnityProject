@@ -6,58 +6,81 @@ public class ManagerMove : MonoBehaviour
 {
     // Start is called before the first frame update
     GridManager grid;
-    public int[,] matrix;
+    public int[,] matrix = new int[30,30];
     int min;
     public int start;
     public int finish;
     public GameObject player;
     public Tile tile;
     public List<int> list = new List<int>();
-    bool checkIncrease = true,checkMove = true;
-    int i;
+    bool  checkMove = false;
+    public bool  checkStart = false, checkPath = false;
+    public List<int> list1 = new List<int>();
+
+    
+    int i =0 ,a =0;
     void Start()
     {
         grid = FindObjectOfType<GridManager>();
         matrix = grid.matrix;
-        player.transform.position = grid.listTiles[0];
-    }
+        for (int i = 0; i < grid.listTiles.Count; i++)
+        {
+            if(Vector2.Distance(player.transform.position,grid.listTiles[i])<1)
+            {
+                player.transform.position = grid.listTiles[i];
+                start = i;
+                break;
+            }
+        }
+
+       
+    }   
     private void Update()
     {
-        i = 1;
-        if(checkMove == true)
+        if (list.Count != 0)
         {
-            //player.transform.position = Vector3.MoveTowards(player.transform.position, grid.listTiles[list[i]], Time.deltaTime);
+            checkStart = true;
         }
-        //if(Vector2.Distance(player.transform.position, grid.listTiles[list[i]])== 0)
-        //{
-        //    if(checkIncrease==true)
-        //    {
-        //        checkMove = false;
-        //        i++;
-        //        checkIncrease = false;
-        //    }
-        //}
-        //if(Vector2.Distance(player.transform.position, grid.listTiles[list[i]]) != 0)
-        //{
-        //    checkMove = true;
-        //    checkIncrease = false;
-        //}
+        else
+        {
+            checkStart = false;
+        }
+
+        if (checkStart == true)
+        {
+
+            if (Vector2.Distance(player.transform.position, grid.listTiles[list[i]]) == 0)
+            {
+                i++;
+            }
+            if (Vector2.Distance(player.transform.position, grid.listTiles[list[i]]) != 0)
+            {
+                checkMove = true;
+            }
+            if (checkMove == true)
+            {
+                player.transform.position = Vector3.MoveTowards(player.transform.position, grid.listTiles[list[i]], Time.deltaTime);
+                checkMove = false;
+            }
+            if (Vector2.Distance(player.transform.position, grid.listTiles[list[list.Count - 1]]) == 0)
+            {
+                start = finish;
+                checkStart = false;
+                checkPath = false;
+                list.Clear();
+                i = 0;
+            }
+        }
     }
-    public void OnMouseDown()
-    {
-        Dijkstra(start, finish);
-    }
-    private void OnMouseEnter()
-    {
-        Debug.Log("Hello");
-    }
+
     public void Dijkstra(int start, int finish)
     {
-        int[] back = new int[grid.hight * grid.hight];
-        int[] weight = new int[grid.hight * grid.hight];
-        int[] mask = new int[grid.hight * grid.hight];
-
-        for (int i = 0; i < grid.hight * grid.hight; i++)
+        Debug.Log("this start" + start);
+        int temp = start;
+        int[] back = new int[grid.hight * grid.width];
+        int[] weight = new int[grid.hight * grid.width];
+        int[] mask = new int[grid.hight * grid.width];
+        for (int i = 0; i < grid.hight * grid.width; i++)
         {
             back[i] = -1;
             weight[i] = int.MaxValue;
@@ -67,14 +90,17 @@ public class ManagerMove : MonoBehaviour
         weight[start] = 0;
         mask[start] = 1;
         int connect = start;
-        while (connect != finish)
+        int z = 0;
+        //while (connect != finish)
+        for(int i = 0; i < grid.hight * grid.width; i ++)
         {
+        
             min = int.MaxValue;
             for (int j = 0; j < grid.width * grid.hight; j++)
             {
                 if (mask[j] == 0)
                 {
-                    if (matrix[start, j] != 0 && weight[j] >= weight[start] + matrix[start, j])
+                    if (matrix[start, j] != 0 && weight[j] > weight[start] + matrix[start, j])
                     {
                         weight[j] = weight[start] + matrix[start, j];
                         back[j] = start;
@@ -85,24 +111,33 @@ public class ManagerMove : MonoBehaviour
                         connect = j;
                     }
                 }
+                z++;
             }
             start = connect;
             mask[start] = 1;
+
+            
         }
-        printPath(0, finish, back);
+       
+        printPath(temp, finish, back);
+
     }
     public void printPath(int start, int finish, int[] back)
     {
+
+
         if (start == finish)
         {
-            //Debug.Log(finish);
+            this.start = finish;
+            list.Add(finish);
+            return;
         }
         else
         {
             printPath(start, back[finish], back);
-            Debug.Log(finish);
             list.Add(finish);
         }
+
     }
 
 

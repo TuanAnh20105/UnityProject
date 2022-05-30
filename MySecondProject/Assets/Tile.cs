@@ -28,6 +28,9 @@ public class Tile : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        managerMove.finish = id;
+        if (managerMove.start == managerMove.finish)
+        {
+            managerMove.finish = id;
+        }
     }
 }
