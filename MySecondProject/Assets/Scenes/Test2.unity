@@ -1423,12 +1423,12 @@ PrefabInstance:
     - target: {fileID: 1792860803165541181, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.12
+      value: 2.7
       objectReference: {fileID: 0}
     - target: {fileID: 1792860803165541181, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.17
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 1792860803165541181, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
@@ -1556,7 +1556,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacle7: {fileID: 1939824763}
-  obstacle9: {fileID: 699847356}
   obstacle6: {fileID: 1178283222}
   obstacle1: {fileID: 271601541}
   obstacle22: {fileID: 699847356}
