@@ -13,31 +13,28 @@ public class GridManager : MonoBehaviour
     public int[,] matrix = new int[30, 30];
     [TextArea(10, 20)]
     public string weight;
+    public ManagerEnemy managerEnemy;
+    public List<int> listObstacle;
+
     int id = 0;
     void Start()
     {
+        listObstacle = new List<int>  { 6,7,8,14,15,1,4,18,19,25,20,11,12,13,22}; 
+        managerEnemy = FindObjectOfType<ManagerEnemy>();
         GenerateGrid();
         Weight();
-        UpdateObstacle(6);
-        UpdateObstacle(7);
-        UpdateObstacle(8);
-        UpdateObstacle(14);
-        UpdateObstacle(15);
-        UpdateObstacle(1);
-        UpdateObstacle(4);
-        UpdateObstacle(18);
-        UpdateObstacle(19);
-        UpdateObstacle(25);
-        UpdateObstacle(20);
-        UpdateObstacle(11);
-        UpdateObstacle(12);
-        UpdateObstacle(13);
-        UpdateObstacle(22);
+        for (int i = 0; i < listObstacle.Count; i++)
+        {
+            UpdateObstacle(listObstacle[i]);
+        }
+
         printMatrix();
+        managerEnemy.SetPosOfEnemy();
       
     }
     public void Update()
     {
+
     }
     public void GenerateGrid()
     {
@@ -74,7 +71,7 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-
+    
     public void UpdateObstacle(int pos)
     {
         for (int x = 0; x < id; x++)
