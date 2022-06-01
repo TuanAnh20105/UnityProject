@@ -568,14 +568,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d281bb46bfab08489da42bd90f68d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: 0
-  finish: 0
-  player: {fileID: 1551991547}
+  player: {fileID: 0}
   tile: {fileID: 7912215144334936503, guid: fb3738bf29841a84f9407168c3e87293, type: 3}
-  list: 
-  list1: 
-  finishEnemy: 0
-  startEnemy: 0
 --- !u!1 &463600943 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7559236422756539456, guid: 95ffe3a84a505b8478d80034b0e2096b,
@@ -935,9 +929,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Enemy: {fileID: 9117067641375458068, guid: 4954a6e2f7312b142b5b02b000555ee0, type: 3}
   lstTrans:
-  - {fileID: 1218080286}
-  - {fileID: 1380910272}
-  - {fileID: 389992680}
+  - {fileID: 1218080285}
+  - {fileID: 1380910271}
+  - {fileID: 389992679}
   grid: {fileID: 432741593}
   listEnemies: []
   listPosEnemy: 
@@ -1053,6 +1047,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Obstacle4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7559236422756539456, guid: 95ffe3a84a505b8478d80034b0e2096b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7559236422756539458, guid: 95ffe3a84a505b8478d80034b0e2096b,
         type: 3}
@@ -1718,6 +1717,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 425826715531349328, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 425826715531349328, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 3.6
+      objectReference: {fileID: 0}
     - target: {fileID: 1792860803165541179, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
       propertyPath: m_Name
@@ -1736,12 +1745,12 @@ PrefabInstance:
     - target: {fileID: 1792860803165541181, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1792860803165541181, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1792860803165541181, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
@@ -1791,7 +1800,7 @@ PrefabInstance:
     - target: {fileID: 1792860803165541182, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1792860803165541182, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
@@ -1893,12 +1902,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1551991547 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1792860803165541179, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1369100794}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1675715329 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2081734360030159473, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,

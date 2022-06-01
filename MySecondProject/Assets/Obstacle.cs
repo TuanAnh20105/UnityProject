@@ -16,6 +16,8 @@ public class Obstacle : MonoBehaviour
     public GameObject obstacle6;
     public GameObject obstacle1, obstacle22, obstacle25, obstacle4;
     public VatCan vatCan;
+    EnemyController enemy;
+    PlayerController player;
 
 
 
@@ -25,6 +27,9 @@ public class Obstacle : MonoBehaviour
         grid = FindObjectOfType<GridManager>();
         managerEnemy = FindObjectOfType<ManagerEnemy>();
         managerMove = FindObjectOfType<ManagerMove>();
+        player = FindObjectOfType<PlayerController>();
+        enemy = FindObjectOfType<EnemyController>();
+        managerEnemy.SetPosOfEnemy();
     }
    
 
@@ -48,40 +53,34 @@ public class Obstacle : MonoBehaviour
         {
             if(hitInformation.transform.name =="Obstacle1")
             {
-                managerEnemy.SetPosOfEnemy();
-                obstacle1.gameObject.SetActive(false);
-                grid.UpdateAfterDragObstacle(1);             
-                managerMove.Find();
-                managerMove.FindCharater();
-              
-                
+                Destroy(obstacle1);
+                grid.UpdateAfterDragObstacle(1);
+                enemy.FindCharater();
+                player.Find();
             }
             if (hitInformation.transform.name == "Obstacle4")
             {
-                managerEnemy.SetPosOfEnemy();
-                obstacle4.gameObject.SetActive(false);
+                Destroy(obstacle4);
                 grid.UpdateAfterDragObstacle(4);
-                managerMove.Find();
-                managerMove.FindCharater();
+                enemy.FindCharater();
+                player.Find();
 
             }
             if (hitInformation.transform.name == "Obstacle22")
             {
-                obstacle22.gameObject.SetActive(false);
+                Destroy(obstacle22);
                 grid.UpdateAfterDragObstacle(22);
-                managerMove.Find();
-                managerMove.FindCharater();
+                enemy.FindCharater();
+                player.Find();
 
             }
             if (hitInformation.transform.name == "Obstacle25")
             {
-                obstacle25.gameObject.SetActive(false);
+                Destroy(obstacle25);
                 grid.UpdateAfterDragObstacle(25);
-                managerMove.Find();
-                managerMove.FindCharater();
-
+                enemy.FindCharater();
+                player.Find();
             }
         }
     }
-
 }

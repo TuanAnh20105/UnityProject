@@ -6,14 +6,15 @@ using UnityEngine.Events;
 public class VatCan : MonoBehaviour , IVatCan
 {
     // Start is called before the first frame update
-    public ManagerMove managerMove;
+    PlayerController player;
+    EnemyController enemy;
     public UnityEvent unityEvent = new UnityEvent();
     Vector2 Pos;
 
     public void SetEvent()
     {
-        managerMove = FindObjectOfType<ManagerMove>();
-        unityEvent.AddListener(managerMove.Find);
+        unityEvent.AddListener(player.Find);
+        unityEvent.AddListener(enemy.FindCharater);
     }
 
     public void SetInvoke()
@@ -23,8 +24,13 @@ public class VatCan : MonoBehaviour , IVatCan
 
     void Start()
     {
-        Pos = transform.position;
-        SetEvent();
+        Pos = transform.position;       
+    }
+    public void Awake()
+    {
+        player = FindObjectOfType<PlayerController>();
+        enemy = FindObjectOfType<EnemyController>();
+        //SetEvent();
     }
     // Update is called once per frame
     void Update()
@@ -33,7 +39,7 @@ public class VatCan : MonoBehaviour , IVatCan
     }
     private void OnDisable()
     {
-        SetInvoke();
+        //SetInvoke();
     }
 
 }

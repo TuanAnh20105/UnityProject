@@ -8,99 +8,16 @@ public class ManagerMove : MonoBehaviour
     GridManager grid;
     public int[,] matrix = new int[30,30];
     int min;
-    public int start;
-    public int finish;
-    public GameObject player;
+    public PlayerController player;
     public Tile tile;
-    public List<int> list = new List<int>();
-    bool  checkMove = false;
-    bool checkStart = false;
-    public List<int> list1 = new List<int>();
-    ManagerEnemy managerEnemy;
     EnemyController enemy;
-    public int startEnemy, finishEnemy;
-    public List<EnemyController> listEnemy;
-    bool checkStartEnemy = false;
-    int temp,temp1;
-
-    int i =0 ;
     void Start()
     {
         enemy = FindObjectOfType<EnemyController>();
-        managerEnemy = FindObjectOfType<ManagerEnemy>();
         grid = FindObjectOfType<GridManager>();
         matrix = grid.matrix;
-        for (int i = 0; i < grid.listTiles.Count; i++)
-        {
-            if(Vector2.Distance(player.transform.position,grid.listTiles[i])<1)
-            {
-                player.transform.position = grid.listTiles[i];
-                start = i;
-                break;
-            }
-        }     
+        player = FindObjectOfType<PlayerController>();
     }   
-    public void FixedUpdate()
-    {
-        if (checkStart == true)
-        {
-
-
-            for(int i = 0; i < managerEnemy.listEnemies.Count; i ++)
-            {
-                if(Vector2.Distance(managerEnemy.listEnemies[i].transform.position, grid.listTiles[temp]) ==0)
-                {
-                    temp1 = i;
-                }
-            }
-            if (Vector2.Distance(managerEnemy.listEnemies[temp1].transform.position, grid.listTiles[list1[i]]) == 0)
-            {
-                i++;
-            }
-            if (Vector2.Distance(managerEnemy.listEnemies[temp1].transform.position, grid.listTiles[list1[i]]) != 0)
-            {
-                checkMove = true;
-            }
-            if (checkMove == true)
-            {
-                managerEnemy.listEnemies[temp1].transform.position = Vector3.MoveTowards(managerEnemy.listEnemies[temp1].transform.position, grid.listTiles[list1[i]], Time.deltaTime);
-                checkMove = false;
-            }
-            if (Vector2.Distance(managerEnemy.listEnemies[temp1].transform.position, grid.listTiles[list1[list1.Count - 1]]) == 0)
-            {
-                //start = finish;
-                //checkStart = false;
-                //list.Clear();
-                //i = 0;
-            }
-        }
-        if(checkStartEnemy == true)
-        {
-            if (Vector2.Distance(player.transform.position, grid.listTiles[list[i]]) == 0)
-            {
-                i++;
-            }
-            if (Vector2.Distance(player.transform.position, grid.listTiles[list[i]]) != 0)
-            {
-                checkMove = true;
-            }
-            if (checkMove == true)
-            {
-                player.transform.position = Vector3.MoveTowards(player.transform.position, grid.listTiles[list[i]], Time.deltaTime);
-                checkMove = false;
-            }
-            if (Vector2.Distance(player.transform.position, grid.listTiles[list[list.Count - 1]]) == 0)
-            {
-                start = finish;
-                checkStart = false;
-                list.Clear();
-                i = 0;
-            }
-        }
-       
-    }
-
-
     public bool Dijkstra(int start, int finish)
     {
         int temp = start;
@@ -115,8 +32,7 @@ public class ManagerMove : MonoBehaviour
         }
         back[start] = 0;
         weight[start] = 0;
-        mask[start] = 1;
-        
+        mask[start] = 1;       
         int connect = start;
         int z = 0;
         //for (int i = 0; i < grid.hight * grid.width; i++)
@@ -163,76 +79,73 @@ public class ManagerMove : MonoBehaviour
     }
     public void printPath(int start, int finish, int[] back)
     {
-
-
         if (start == finish)
         {
-            this.start = finish;
-            list.Add(finish);
+            player.start = finish;
+            player.list.Add(finish);
             return;
         }
         else
         {
             printPath(start, back[finish], back);
-            list.Add(finish);
+            player.list.Add(finish);
         }
 
     }
 
 
-    public bool DijkstraForEnemy(int start, int finish)
+    public bool DijkstraForEnemy(int startEnemy, int finishEnemy)
     {
-        int temp = start;
-        int[] back = new int[grid.hight * grid.width];
-        int[] weight = new int[grid.hight * grid.width];
-        int[] mask = new int[grid.hight * grid.width];
+        int temp = startEnemy;
+        int[] backEnemy = new int[grid.hight * grid.width];
+        int[] weightEnemy = new int[grid.hight * grid.width];
+        int[] maskEnemy = new int[grid.hight * grid.width];
         for (int i = 0; i < grid.hight * grid.width; i++)
         {
-            back[i] = -1;
-            weight[i] = int.MaxValue;
-            mask[i] = 0;
+            backEnemy[i] = -1;
+            weightEnemy[i] = int.MaxValue;
+            maskEnemy[i] = 0;
         }
-        back[start] = 0;
-        weight[start] = 0;
-        mask[start] = 1;
+        backEnemy[startEnemy] = 0;
+        weightEnemy[startEnemy] = 0;
+        maskEnemy[startEnemy] = 1;
 
-        int connect = start;
+        int connect = startEnemy;
         int z = 0;
-        //for (int i = 0; i < grid.hight * grid.width; i++)
-        while (connect != finish)
+        while (connect != finishEnemy)
         {
             min = int.MaxValue;
             for (int j = 0; j < grid.width * grid.hight; j++)
             {
-                if (mask[j] == 0)
+                if (maskEnemy[j] == 0)
                 {
-                    if (matrix[start, j] != 0 && weight[j] > weight[start] + matrix[start, j])
+                    if (matrix[startEnemy, j] != 0 && weightEnemy[j] > weightEnemy[startEnemy] + matrix[startEnemy, j])
                     {
-                        weight[j] = weight[start] + matrix[start, j];
-                        back[j] = start;
+                        weightEnemy[j] = weightEnemy[startEnemy] + matrix[startEnemy, j];
+                        backEnemy[j] = startEnemy;
                     }
-                    if (min > weight[j] && weight[j] != 0)
+                    if (min > weightEnemy[j] && weightEnemy[j] != 0)
                     {
-                        min = weight[j];
+                        min = weightEnemy[j];
                         connect = j;
                     }
                 }
                 z++;
             }
-            start = connect;
-            mask[start] = 1;
-            if (connect == finish)
+            startEnemy = connect;
+            maskEnemy[startEnemy] = 1;
+            if (connect == finishEnemy)
             {
                 break;
             }
-            if (z >= 1000)
+            if (z >= (grid.hight * grid.width)*(grid.hight * grid.width))
             {
                 break;
             }
         }
-        if (connect == finish)
+        if (connect == finishEnemy)
         {
-            printPathForEnemy(temp, finish, back);
+            enemy.printPathForEnemy(temp, finishEnemy, backEnemy);
             return true;
 
         }
@@ -240,64 +153,4 @@ public class ManagerMove : MonoBehaviour
             return false;
 
     }
-    public void printPathForEnemy(int start, int finish, int[] back)
-    {
-
-
-        if (start == finish)
-        {
-            this.start = finish;
-            list1.Add(finish);
-            return;
-        }
-        else
-        {
-            printPathForEnemy(start, back[finish], back);
-            list1.Add(finish);
-        }
-
-    }
-
-
-    public void Find()
-    {
-        for(int i = 0; i < managerEnemy.listPosEnemy.Count; i ++)
-        {
-            finish = managerEnemy.listPosEnemy[i];
-            
-            if(Dijkstra(start, finish) == true)
-            {
-                checkStart = true;
-                managerEnemy.listPosEnemy.RemoveAt(i);
-                break;
-            }
-            else
-            {
-                continue;
-            }
-        }
-    }
-    public void FindCharater()
-    {
-       
-        
-        for (int i = 0; i < managerEnemy.listPosEnemy.Count; i++)
-        {
-            finishEnemy = start;
-          
-            if (DijkstraForEnemy(managerEnemy.listPosEnemy[i], finishEnemy) == true)
-            {
-                startEnemy = managerEnemy.listPosEnemy[i];
-                temp = i;
-                checkStartEnemy = true;
-                break;
-            }
-            else
-            {
-                continue;
-            }
-        }
-    }
-
-
 }

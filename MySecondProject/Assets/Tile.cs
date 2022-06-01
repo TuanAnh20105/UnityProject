@@ -8,10 +8,10 @@ public class Tile : MonoBehaviour
     public int id;
     public GameObject hightLight;
     [SerializeField] private SpriteRenderer _renderer;
-    public ManagerMove managerMove;
+    public PlayerController player;
     private void Start()
     {
-        managerMove = FindObjectOfType<ManagerMove>();
+        player = FindObjectOfType<PlayerController>();
     }
     public void Init(bool isOffset)
     {
@@ -26,11 +26,11 @@ public class Tile : MonoBehaviour
     {
         hightLight.SetActive(false);
     }
-    private void OnMouseDown()
-    {
-        if (managerMove.start == managerMove.finish)
-        {
-            managerMove.finish = id;
-        }
-    }
+    //private void OnMouseDown()
+    //{
+    //    if (player.start == player.finish)
+    //    {
+    //        player.finish = id;
+    //    }
+    //}
 }
