@@ -16,7 +16,6 @@ public class Obstacle : MonoBehaviour
     public GameObject obstacle6;
     public GameObject obstacle1, obstacle22, obstacle25, obstacle4;
     public VatCan vatCan;
-    EnemyController enemy;
     PlayerController player;
 
 
@@ -28,7 +27,6 @@ public class Obstacle : MonoBehaviour
         managerEnemy = FindObjectOfType<ManagerEnemy>();
         managerMove = FindObjectOfType<ManagerMove>();
         player = FindObjectOfType<PlayerController>();
-        enemy = FindObjectOfType<EnemyController>();
         managerEnemy.SetPosOfEnemy();
     }
    
@@ -55,31 +53,66 @@ public class Obstacle : MonoBehaviour
             {
                 Destroy(obstacle1);
                 grid.UpdateAfterDragObstacle(1);
-                enemy.FindCharater();
+                player.checkFind = true;
                 player.Find();
+                for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
+                {
+                    if(managerEnemy.listEnemy[i].startEnemy == player.finish)
+                    {
+                        managerEnemy.listEnemy[i].FindCharater();
+                        managerEnemy.listEnemy[i].checkFind = true;
+                        break;
+                    }
+                }                                           
             }
             if (hitInformation.transform.name == "Obstacle4")
             {
                 Destroy(obstacle4);
                 grid.UpdateAfterDragObstacle(4);
-                enemy.FindCharater();
+                player.checkFind = true;
                 player.Find();
+                for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
+                {
+                    if (managerEnemy.listEnemy[i].startEnemy == player.finish)
+                    {
+                        managerEnemy.listEnemy[i].FindCharater();
+                        managerEnemy.listEnemy[i].checkFind = true;
+                        break;
+                    }
+                }
 
             }
             if (hitInformation.transform.name == "Obstacle22")
             {
                 Destroy(obstacle22);
                 grid.UpdateAfterDragObstacle(22);
-                enemy.FindCharater();
+                player.checkFind = true;
                 player.Find();
-
+                for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
+                {
+                    if (managerEnemy.listEnemy[i].startEnemy == player.finish)
+                    {
+                        managerEnemy.listEnemy[i].FindCharater();
+                        managerEnemy.listEnemy[i].checkFind = true;
+                        break;
+                    }
+                }
             }
             if (hitInformation.transform.name == "Obstacle25")
             {
                 Destroy(obstacle25);
                 grid.UpdateAfterDragObstacle(25);
-                enemy.FindCharater();
+                player.checkFind = true;
                 player.Find();
+                for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
+                {
+                    if (managerEnemy.listEnemy[i].startEnemy == player.finish)
+                    {
+                        managerEnemy.listEnemy[i].FindCharater();
+                        managerEnemy.listEnemy[i].checkFind = true;
+                        break;
+                    }
+                }
             }
         }
     }

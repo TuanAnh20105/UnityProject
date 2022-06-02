@@ -15,18 +15,24 @@ public class GridManager : MonoBehaviour
     public string weight;
     public ManagerEnemy managerEnemy;
     public List<int> listObstacle;
+    public static GridManager Instance;
 
     int id = 0;
     private void Awake()
     {
-        listObstacle = new List<int> { 6, 7, 8, 14, 15, 1, 4, 18, 19, 25, 20, 11, 12, 13, 22 };
-        managerEnemy = FindObjectOfType<ManagerEnemy>();
+        Instance = this;
+        listObstacle = new List<int> { 1,6, 7, 8, 14, 15, 4, 18, 19, 25, 20, 11, 12, 13, 22 };
         GenerateGrid();
         Weight();
         for (int i = 0; i < listObstacle.Count; i++)
         {
             UpdateObstacle(listObstacle[i]);
         }
+    }
+    private void Start()
+    {
+
+        managerEnemy = FindObjectOfType<ManagerEnemy>();
 
         printMatrix();
     }
@@ -37,7 +43,7 @@ public class GridManager : MonoBehaviour
     }
     public void GenerateGrid()
     {
-        tiles = new Dictionary<Vector2, Tile>();
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < hight; y++)

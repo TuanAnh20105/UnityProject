@@ -8,31 +8,35 @@ public class ManagerEnemy : MonoBehaviour
     public GameObject Enemy;
     public List<GameObject> lstTrans;
     public GridManager grid;
-    public List<GameObject> listEnemies = new List<GameObject>();
-    public List<int> listPosEnemy = new List<int>();
+    public List<EnemyController> listEnemy = new List<EnemyController>();
+    EnemyController enemy;
     private void Awake()
     {
         for (int i = 0; i < lstTrans.Count; i++)
         {
             GameObject enemies = Instantiate(Enemy, lstTrans[i].transform.position, Quaternion.identity)  ;
             enemies.transform.name = "Enemy" + i;
-            listEnemies.Add(enemies);
+            enemy = enemies.GetComponent<EnemyController>();
+            enemy.id = i;
+            enemy.a = enemies.transform.position;
+            listEnemy.Insert(i,enemy);
         }
     }
-    void Start()
+    private void Start()
     {
-            
+
     }
+
     public void SetPosOfEnemy()
     {       
-        for (int i = 0; i < listEnemies.Count; i++)
+        for (int i = 0; i < listEnemy.Count; i++)
         {
             for (int j = 0; j < grid.listTiles.Count; j++)
             {
-                if (Vector2.Distance(listEnemies[i].transform.position, grid.listTiles[j]) < 1)
+                if (Vector2.Distance(listEnemy[i].transform.position, grid.listTiles[j]) < 1)
                 {
-                    listEnemies[i].transform.localPosition = grid.listTiles[j];
-                    listPosEnemy.Add(j);
+                    listEnemy[i].transform.localPosition = grid.listTiles[j];
+                    listEnemy[i].startEnemy = j;
                 }
             }
         }

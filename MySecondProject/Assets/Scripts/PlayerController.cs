@@ -13,15 +13,16 @@ public class PlayerController : MonoBehaviour
     public int count = 0;
     public int start, finish;
     public bool checkStart = false;
-     public int i = 0;
+    public int i = 1;
     GridManager grid;
     public List<int> list = new List<int>();
     ManagerEnemy managerEnemy;
     public Vector3 vt;
     ManagerMove managerMove;
     bool checkMove = false;
-    EnemyController enemy;
     int updatePosPlayer;
+    public bool checkFind = false;
+    public int save = 0;
 
     void Start()
     {
@@ -32,15 +33,13 @@ public class PlayerController : MonoBehaviour
         managerMove = FindObjectOfType<ManagerMove>();
         grid = FindObjectOfType<GridManager>();
         SetPosCharater();
-        enemy = FindObjectOfType<EnemyController>();
-
-
+        i = 1;
     }
     public void SetPosCharater()
     {
         for (int i = 0; i < grid.listTiles.Count; i++)
         {
-            if (Vector2.Distance(transform.position, grid.listTiles[i]) < 1)
+            if (Vector2.Distance(transform.position, grid.listTiles[i]) < 0.5f)
             {
                 transform.position = grid.listTiles[i];
                 start = i;
@@ -52,7 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         for (int i = 0; i < grid.listTiles.Count; i++)
         {
-            if (Vector2.Distance(transform.position, grid.listTiles[i]) < 0.5)
+            if (Vector2.Distance(transform.position, grid.listTiles[i]) ==0)
             {
                 updatePosPlayer = i;
                 break;
@@ -61,20 +60,26 @@ public class PlayerController : MonoBehaviour
         return updatePosPlayer;
     }
     // Update is called once per frame
+    private void LateUpdate()
+    {
+        if (checkFind == true)
+        {
+            if (Vector2.Distance(vt, transform.position) != 0)
+            {
+                start = SetPosPlayerInTile();
+                managerEnemy.listEnemy[save].FindCharater();               
+            }
+        }
+    }
     void Update()
     {
-        if(Vector2.Distance(vt,transform.position)!= 0)
-        {
-            start = SetPosPlayerInTile();
-            enemy.FindCharater();
-            
-        }
+        Debug.Log("this save " + save);
         if (checkStart == true)
         {
-            if (Vector2.Distance(transform.position, grid.listTiles[list[i]]) == 0)
-            {
-                i++;
-            }
+            //if (Vector2.Distance(transform.position, grid.listTiles[list[i]]) == 0)
+            //{
+            //    i++;
+            //}
             if (Vector2.Distance(transform.position, grid.listTiles[list[i]]) != 0)
             {
                 checkMove = true;
@@ -89,19 +94,22 @@ public class PlayerController : MonoBehaviour
                 start = finish;
                 checkStart = false;
                 list.Clear();
-                i = 0;
+                i = 1;
             }
+
         }
     }
     public void Find()
     {
         list.Clear();
-        start = SetPosPlayerInTile();
-        finish = enemy.startEnemy;
-        for (int i = 0; i < managerEnemy.listPosEnemy.Count; i++)
+        
+        for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
         {
+            start =  SetPosPlayerInTile();
+            finish = managerEnemy.listEnemy[i].startEnemy;
             if (managerMove.Dijkstra(start, finish) == true)
             {
+                save = i;
                 checkStart = true;
                 break;
             }
@@ -110,19 +118,6 @@ public class PlayerController : MonoBehaviour
                 continue;
             }
         }
-    }
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-
-        
-    }
-    void SetCheckHealth()
-    {
-        checkHealth = true;
-    }
-    private void OnTriggerExit2D(Collider2D other)
-    {
-
     }
 
 }

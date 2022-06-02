@@ -11,12 +11,14 @@ public class ManagerMove : MonoBehaviour
     public PlayerController player;
     public Tile tile;
     EnemyController enemy;
+    ManagerEnemy managerEnemy;
     void Start()
     {
         enemy = FindObjectOfType<EnemyController>();
         grid = FindObjectOfType<GridManager>();
         matrix = grid.matrix;
         player = FindObjectOfType<PlayerController>();
+        managerEnemy = FindObjectOfType<ManagerEnemy>();
     }   
     public bool Dijkstra(int start, int finish)
     {
@@ -62,7 +64,7 @@ public class ManagerMove : MonoBehaviour
             {
                 break;
             }
-            if(z>=1000)
+            if(z>= (grid.hight * grid.width) * (grid.hight * grid.width))
             {
                 break;
             }
@@ -92,8 +94,6 @@ public class ManagerMove : MonoBehaviour
         }
 
     }
-
-
     public bool DijkstraForEnemy(int startEnemy, int finishEnemy)
     {
         int temp = startEnemy;
@@ -145,9 +145,8 @@ public class ManagerMove : MonoBehaviour
         }
         if (connect == finishEnemy)
         {
-            enemy.printPathForEnemy(temp, finishEnemy, backEnemy);
+            managerEnemy.listEnemy[player.save].printPathForEnemy(temp, finishEnemy, backEnemy);
             return true;
-
         }
         else
             return false;
