@@ -72,8 +72,7 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-    }
-    
+    }    
     public void UpdateObstacle(int pos)
     {
         for (int x = 0; x < id; x++)
@@ -111,13 +110,13 @@ public class GridManager : MonoBehaviour
             }
         }
     }
-    public void UpdateAfterDragObstacle(int pos)
+    public void UpdateAfterDragObstacle(int pos) //9
     {
         for (int x = 0; x < id; x++)
         {
             for (int y = 0; y < id; y++)
             {
-                if (y == pos + 1 || y == pos - 1 || y == pos - hight || y == pos + hight)
+                if (y == pos + 1 || y == pos - 1 || y == pos - hight || y == pos + hight)//10,
                 {
                     matrix[ y,pos] = 1;
                 }
@@ -130,18 +129,19 @@ public class GridManager : MonoBehaviour
                     matrix[x, pos + 1] = 1;                   
                     matrix[x, pos + hight] = 1;
                 }
-                else if(pos>hight)
+                else if(pos>hight && pos <= width*(hight-1))
                 {
                     matrix[x, pos - 1] = 1;
                     matrix[x, pos + 1] = 1;
                     matrix[x, pos - hight] = 1;
+                    matrix[x, pos + hight] = 1;
                 }
                 else
                 {
                      matrix[x, pos - 1] = 1;
                      matrix[x, pos + 1] = 1;
                      matrix[x, pos - hight] = 1;
-                     matrix[x, pos + hight] = 1;
+                     
                 }
             }
         }

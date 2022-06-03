@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if(checkStart == true)
+        if (checkStart == true)
         {
             transform.position = Vector2.MoveTowards(transform.position, line.GetPosition(0), Time.deltaTime);
             Find();
@@ -83,8 +83,7 @@ public class PlayerController : MonoBehaviour
     }
     public void Find()
     {
-        list.Clear();
-        
+        list.Clear();        
         for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
         {
             start =  SetPosPlayerInTile();
@@ -101,10 +100,10 @@ public class PlayerController : MonoBehaviour
                 break;
             }
         }
-        if(list.Count ==0)
-        {
-            finish = -1;
-        }
+        //if(list.Count ==0)
+        //{
+        //    finish = -1;
+        //}
         if(list.Count != 0)
         {
             checkFind = true;

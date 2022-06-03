@@ -80,17 +80,20 @@ public class EnemyController : MonoBehaviour, IDamageable
     }
     public void FindCharater()
     {
+
+        
         for (int j = 0; j < managerEnemy.listEnemy.Count; j++)
         {
-            managerEnemy.listEnemy[j].startEnemy = managerEnemy.listEnemy[j].SetPosEnemyInTile();
-            if (managerEnemy.listEnemy[j].startEnemy == player.finish)
+            
+            managerEnemy.listEnemy[j].startEnemy = managerEnemy.listEnemy[j].SetPosEnemyInTile();//update pos after move 
+            if (managerEnemy.listEnemy[j].startEnemy == player.finish) // check enemy have path 
             {
-                managerEnemy.listEnemy[j].list1.Clear();
-                managerEnemy.listEnemy[j].startEnemy = SetPosEnemyInTile();
-               for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
+                managerEnemy.listEnemy[j].list1.Clear(); // remove all list
+                //managerEnemy.listEnemy[j].startEnemy = SetPosEnemyInTile();
+               for (int i = 0; i < managerEnemy.listEnemy.Count; i++) // move to list path 
                {
-                    managerEnemy.listEnemy[j].finishEnemy =  player.start;
-                   if (managerMove.DijkstraForEnemy(managerEnemy.listEnemy[i].startEnemy, finishEnemy) == true)
+                    managerEnemy.listEnemy[j].finishEnemy =  player.start; // update finish
+                   if (managerMove.DijkstraForEnemy(managerEnemy.listEnemy[i].startEnemy, finishEnemy) == true) // check path of enemy  
                    {
                         managerEnemy.listEnemy[i].line.positionCount = managerEnemy.listEnemy[j].list1.Count;
                         for (int a = 0; a < managerEnemy.listEnemy[i].list1.Count; a++)
@@ -103,20 +106,18 @@ public class EnemyController : MonoBehaviour, IDamageable
            }
             if (managerEnemy.listEnemy[j].list1.Count != 0)
             {
-                Debug.Log("Enemy" + "  find charater");
+                Debug.Log("Enemy "+ j + "  find charater");
                 managerEnemy.listEnemy[j].checkFind = true;
             }
             if (managerEnemy.listEnemy[j].list1.Count == 0)
             {
-                Debug.Log("Enemy" + " Dont find charater");
+                Debug.Log("Enemy " + j + " Dont find charater");
             }
 
         }
     }
     public void printPathForEnemy(int startEnemy, int finishEnemy, int[] backEnemy)
     {
-
-
         if (startEnemy == finishEnemy)
         {
             this.startEnemy = finishEnemy;
