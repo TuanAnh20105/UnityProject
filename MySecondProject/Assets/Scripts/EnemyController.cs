@@ -10,22 +10,15 @@ public class EnemyController : MonoBehaviour, IDamageable
     PlayerController player;
     ManagerMove managerMove;
     [HideInInspector] public Vector2 a;
-    bool checkMove = false;
     GridManager grid;
     ManagerEnemy managerEnemy;
-
-    int temp, temp1;
     public bool checkStartEnemy = false;
     public int startEnemy, finishEnemy;
     public List<int> list1 = new List<int>();
-    bool checkPos = false, checkDied = false;
+    bool  checkDied = false;
     int updatePosEnemy;
-    public int id;
     public bool checkFind = false;
-    int temp2;
-    int j = 1;
-    Obstacle obstacle;
-    bool checkout = false;
+    public LineRenderer line;
 
     void Start()
     {
@@ -34,98 +27,42 @@ public class EnemyController : MonoBehaviour, IDamageable
         managerMove = FindObjectOfType<ManagerMove>();
         managerEnemy=FindObjectOfType<ManagerEnemy>();
         grid = GridManager.Instance;
-        temp2 = startEnemy;
-        obstacle = FindObjectOfType<Obstacle>();
     }
 
     // Update is called once per frame
-    private void LateUpdate()
+    private void FixedUpdate()
     {
+        
         if (checkFind == true)
         {
             for(int i = 0; i < managerEnemy.listEnemy.Count; i ++)
             {
-                if (Vector2.Distance(managerEnemy.listEnemy[i].transform.position, transform.position) >= 1)
+
+                if (Vector2.Distance(managerEnemy.listEnemy[i].transform.position, transform.position) == 0f)
                 {
-                    startEnemy = SetPosEnemyInTile();
+                    managerEnemy.listEnemy[i].startEnemy = SetPosEnemyInTile();
                     player.Find();
-                    //j = 0;
                 }
             }
         }
     }
     void Update()
     {
-
-        if (checkPos == true)
-        {
-            for (int x = 0; x < managerEnemy.listEnemy.Count; x++)
-            {
-                if (Vector2.Distance(managerEnemy.listEnemy[x].transform.position, grid.listTiles[temp]) == 0)
-                {
-                    temp1 = x;
-                }
-            }
-            checkPos = false;
-        }
-        //****************************************************************
-
         if (checkStartEnemy == true && list1.Count != 0)
         {
-            
-            if(Vector2.Distance(managerEnemy.listEnemy[temp1].transform.position, grid.listTiles[list1[1]]) !=0)
-            {
-                checkMove = true;
-            }
-            if (checkMove == true)
-            {
-                managerEnemy.listEnemy[temp1].transform.position = Vector3.MoveTowards(managerEnemy.listEnemy[temp1].transform.position, grid.listTiles[list1[j]], Time.deltaTime);
-                checkMove = false;
-            }
-
-            //if (Vector2.Distance(managerEnemy.listEnemy[temp1].transform.position, grid.listTiles[list1[j]]) == 0)
-            //{
-            //    j = 0;
-            //}
-            //if (list1.Count == 1)
-            //{
-            //    j = 0;
-            //}
-            //if (Vector2.Distance(managerEnemy.listEnemy[temp1].transform.position, grid.listTiles[list1[j]]) == 0)
-            //{
-            //    j++;
-            //}
-            //if (Vector2.Distance(managerEnemy.listEnemy[temp1].transform.position, grid.listTiles[list1[j]]) != 0)
-            //{
-            //    checkMove = true;
-            //}
-            //if (checkMove == true)
-            //{
-            //    managerEnemy.listEnemy[temp1].transform.position = Vector3.MoveTowards(managerEnemy.listEnemy[temp1].transform.position, grid.listTiles[list1[j]], Time.deltaTime);
-            //    checkMove = false;
-            //}
-            if (Vector2.Distance(managerEnemy.listEnemy[temp1].transform.position, grid.listTiles[list1[list1.Count - 1]]) == 0)
-            {
-                startEnemy = finishEnemy;
-                checkStartEnemy = false;
-                this.list1.Clear();
-                j = 1;
-            }
+            transform.position = Vector2.MoveTowards(transform.position, line.GetPosition(0), Time.deltaTime);
         }
         if (checkDied == true)
         {
             startEnemy = finishEnemy;
             checkStartEnemy = false;
-            this.list1.Clear();
             for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
             {
                 managerEnemy.listEnemy[i].finishEnemy = 0;
                 managerEnemy.listEnemy[i].checkStartEnemy = false;
+                managerEnemy.listEnemy[i].checkFind = false;
             }
-            //j = 0;
-            checkFind = false;
             checkDied = false;
-
         }
         UpdateTextBox();
     }
@@ -148,31 +85,31 @@ public class EnemyController : MonoBehaviour, IDamageable
             managerEnemy.listEnemy[j].startEnemy = managerEnemy.listEnemy[j].SetPosEnemyInTile();
             if (managerEnemy.listEnemy[j].startEnemy == player.finish)
             {
-                list1.Clear();
+                managerEnemy.listEnemy[j].list1.Clear();
                 managerEnemy.listEnemy[j].startEnemy = SetPosEnemyInTile();
                for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
                {
                     managerEnemy.listEnemy[j].finishEnemy =  player.start;
-
                    if (managerMove.DijkstraForEnemy(managerEnemy.listEnemy[i].startEnemy, finishEnemy) == true)
                    {
-                       temp = managerEnemy.listEnemy[i].startEnemy;
-                        managerEnemy.listEnemy[j].checkStartEnemy = true;
-                       checkPos = true;
-                        checkout = true;
-                       break;
-                   }
-                   else
-                   {
-                       continue;
+                        managerEnemy.listEnemy[i].line.positionCount = managerEnemy.listEnemy[j].list1.Count;
+                        for (int a = 0; a < managerEnemy.listEnemy[i].list1.Count; a++)
+                            {
+                            managerEnemy.listEnemy[i].line.SetPosition(a, grid.listTiles[managerEnemy.listEnemy[j].list1[a]]);
+                            }   
+                       managerEnemy.listEnemy[j].checkStartEnemy = true;
                    }
                }
-               if(checkout == true)
-                {
-                    checkout = false;
-                    break;
-                }
            }
+            if (managerEnemy.listEnemy[j].list1.Count != 0)
+            {
+                Debug.Log("Enemy" + "  find charater");
+                managerEnemy.listEnemy[j].checkFind = true;
+            }
+            if (managerEnemy.listEnemy[j].list1.Count == 0)
+            {
+                Debug.Log("Enemy" + " Dont find charater");
+            }
 
         }
     }
@@ -183,7 +120,6 @@ public class EnemyController : MonoBehaviour, IDamageable
         if (startEnemy == finishEnemy)
         {
             this.startEnemy = finishEnemy;
-            list1.Add(finishEnemy);
             return;
         }
         else
@@ -209,10 +145,8 @@ public class EnemyController : MonoBehaviour, IDamageable
             managerEnemy.listEnemy.Remove(this);
             player.list.Clear();
             player.SetPosCharater();
-            player.i = 1;
-            player.checkFind = false;
-            managerEnemy.SetPosOfEnemy();
-            startEnemy = temp2;
+            player.Find();
+
             checkDied = true;
             if (Damage(health) == true)
             {

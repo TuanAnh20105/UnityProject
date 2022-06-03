@@ -10,11 +10,9 @@ public class ManagerMove : MonoBehaviour
     int min;
     public PlayerController player;
     public Tile tile;
-    EnemyController enemy;
     ManagerEnemy managerEnemy;
     void Start()
     {
-        enemy = FindObjectOfType<EnemyController>();
         grid = FindObjectOfType<GridManager>();
         matrix = grid.matrix;
         player = FindObjectOfType<PlayerController>();
@@ -84,7 +82,7 @@ public class ManagerMove : MonoBehaviour
         if (start == finish)
         {
             player.start = finish;
-            player.list.Add(finish);
+            //player.list.Add(finish);
             return;
         }
         else
@@ -145,7 +143,10 @@ public class ManagerMove : MonoBehaviour
         }
         if (connect == finishEnemy)
         {
-            managerEnemy.listEnemy[player.save].printPathForEnemy(temp, finishEnemy, backEnemy);
+            //for(int i = 0; i < player.save.Count; i++)
+            {
+                managerEnemy.listEnemy[player.save].printPathForEnemy(temp, finishEnemy, backEnemy);
+            }
             return true;
         }
         else

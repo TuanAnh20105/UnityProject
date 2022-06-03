@@ -7,22 +7,20 @@ public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
     public TMP_Text healthText;
-    public int health = 20;
-    public int a;
-    bool checkHealth = true;
-    public int count = 0;
+    [HideInInspector] public int health = 20;
+    [HideInInspector] public int a;
     public int start, finish;
     public bool checkStart = false;
     public int i = 1;
     GridManager grid;
     public List<int> list = new List<int>();
     ManagerEnemy managerEnemy;
-    public Vector3 vt;
+    [HideInInspector] public Vector3 vt;
     ManagerMove managerMove;
-    bool checkMove = false;
     int updatePosPlayer;
     public bool checkFind = false;
-    public int save = 0;
+    [HideInInspector] public int save = 0;
+    public LineRenderer line;
 
     void Start()
     {
@@ -43,25 +41,29 @@ public class PlayerController : MonoBehaviour
             {
                 transform.position = grid.listTiles[i];
                 start = i;
+         
                 break;
             }
         }
+     
     }
     public int SetPosPlayerInTile()
     {
         for (int i = 0; i < grid.listTiles.Count; i++)
         {
-            if (Vector2.Distance(transform.position, grid.listTiles[i]) ==0)
+            if (Vector2.Distance(transform.position, grid.listTiles[i]) <=0.4f)
             {
                 updatePosPlayer = i;
-                break;
+                vt = grid.listTiles[i];
+                break;               
             }
         }
         return updatePosPlayer;
     }
     // Update is called once per frame
-    private void LateUpdate()
+    private void FixedUpdate()
     {
+        
         if (checkFind == true)
         {
             if (Vector2.Distance(vt, transform.position) != 0)
@@ -73,30 +75,10 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        Debug.Log("this save " + save);
-        if (checkStart == true)
+        if(checkStart == true)
         {
-            //if (Vector2.Distance(transform.position, grid.listTiles[list[i]]) == 0)
-            //{
-            //    i++;
-            //}
-            if (Vector2.Distance(transform.position, grid.listTiles[list[i]]) != 0)
-            {
-                checkMove = true;
-            }
-            if (checkMove == true)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, grid.listTiles[list[i]], Time.deltaTime);
-                checkMove = false;
-            }
-            if (Vector2.Distance(transform.position, grid.listTiles[list[list.Count - 1]]) == 0)
-            {
-                start = finish;
-                checkStart = false;
-                list.Clear();
-                i = 1;
-            }
-
+            transform.position = Vector2.MoveTowards(transform.position, line.GetPosition(0), Time.deltaTime);
+            Find();
         }
     }
     public void Find()
@@ -109,14 +91,30 @@ public class PlayerController : MonoBehaviour
             finish = managerEnemy.listEnemy[i].startEnemy;
             if (managerMove.Dijkstra(start, finish) == true)
             {
+                line.positionCount = list.Count;
+                for(int j = 0; j < list.Count; j++)
+                {
+                    line.SetPosition(j, grid.listTiles[list[j]]);
+                }
                 save = i;
                 checkStart = true;
                 break;
             }
-            else
-            {
-                continue;
-            }
+        }
+        if(list.Count ==0)
+        {
+            finish = -1;
+        }
+        if(list.Count != 0)
+        {
+            checkFind = true;
+        }
+    }
+    public void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.tag =="Enemy")
+        {
+            checkFind = false;
         }
     }
 

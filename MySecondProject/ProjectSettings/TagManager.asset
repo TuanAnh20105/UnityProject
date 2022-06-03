@@ -11,6 +11,8 @@ TagManager:
   - Enemy4
   - Princess
   - Player1
+  - Tile
+  - Cot
   layers:
   - Default
   - TransparentFX

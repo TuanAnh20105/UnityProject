@@ -8,9 +8,8 @@ public class GridManager : MonoBehaviour
     public int width, hight;
     [SerializeField] private Tile tilePref;
     [SerializeField] private Transform cam;
-    private Dictionary<Vector2, Tile> tiles;
     public List<Vector2> listTiles = new List<Vector2>();
-    public int[,] matrix = new int[30, 30];
+    public int[,] matrix = new int[200, 200];
     [TextArea(10, 20)]
     public string weight;
     public ManagerEnemy managerEnemy;
@@ -21,7 +20,7 @@ public class GridManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        listObstacle = new List<int> { 1,6, 7, 8, 14, 15, 4, 18, 19, 25, 20, 11, 12, 13, 22 };
+        listObstacle = new List<int> { 1,6, 7, 8, 14, 15, 4, 18, 19, 25, 20, 11, 12, 13, 22,9,10 };
         GenerateGrid();
         Weight();
         for (int i = 0; i < listObstacle.Count; i++)
@@ -31,9 +30,7 @@ public class GridManager : MonoBehaviour
     }
     private void Start()
     {
-
         managerEnemy = FindObjectOfType<ManagerEnemy>();
-
         printMatrix();
     }
 
@@ -65,7 +62,7 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < id; y++)
             {
-                if (Vector2.Distance(listTiles[x], listTiles[y]) >= 1 && Vector2.Distance(listTiles[x], listTiles[y])<=1.5)
+                if (Vector2.Distance(listTiles[x], listTiles[y]) >= 1 && Vector2.Distance(listTiles[x], listTiles[y])<=1.2f)
                 {
                     matrix[x, y] = 1;
                 }

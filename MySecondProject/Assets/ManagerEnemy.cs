@@ -17,7 +17,6 @@ public class ManagerEnemy : MonoBehaviour
             GameObject enemies = Instantiate(Enemy, lstTrans[i].transform.position, Quaternion.identity)  ;
             enemies.transform.name = "Enemy" + i;
             enemy = enemies.GetComponent<EnemyController>();
-            enemy.id = i;
             enemy.a = enemies.transform.position;
             listEnemy.Insert(i,enemy);
         }
