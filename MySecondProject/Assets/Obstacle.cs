@@ -56,29 +56,34 @@ public class Obstacle : MonoBehaviour
         {
             if (hitInformation.transform.name == "Obstacle1")
             {
-                Destroy(obstacle1);
+                obstacle1.SetActive(false);
+                //Destroy(obstacle1);
                 grid.UpdateAfterDragObstacle(1);
             }
             if (hitInformation.transform.name == "Obstacle4")
             {
-                Destroy(obstacle4);
+                obstacle4.SetActive(false);
+                //Destroy(obstacle4);
                 grid.UpdateAfterDragObstacle(4);
 
             }
             if (hitInformation.transform.name == "Obstacle22")
             {
-                Destroy(obstacle22);
+                obstacle22.SetActive(false);
+                //Destroy(obstacle22);
                 grid.UpdateAfterDragObstacle(22);
             }
             if (hitInformation.transform.name == "Obstacle9")
             {
-                Destroy(obstacle9);
+                obstacle9.SetActive(false);
+                //Destroy(obstacle9);
                 grid.UpdateAfterDragObstacle(9);
                 grid.UpdateAfterDragObstacle(10);
             }
             if (hitInformation.transform.name == "Obstacle25")
             {
-                Destroy(obstacle25);
+                obstacle25.SetActive(false);
+                //Destroy(obstacle25);
                 grid.UpdateAfterDragObstacle(25);
             }
             if (hitInformation.transform.name == "Obstacle1" || hitInformation.transform.name == "Obstacle4" ||
