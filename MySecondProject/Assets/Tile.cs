@@ -7,11 +7,11 @@ public class Tile : MonoBehaviour
     [SerializeField] private Color baseColor, offsetColor;
     public int id;
     public GameObject hightLight;
-    [SerializeField] private SpriteRenderer _renderer;
-    public PlayerController player;
+    public SpriteRenderer _renderer;
+    public SetUpObstacles setUpObstacles;
     private void Start()
     {
-        player = FindObjectOfType<PlayerController>();
+
     }
     public void Init(bool isOffset)
     {
@@ -26,11 +26,4 @@ public class Tile : MonoBehaviour
     {
         hightLight.SetActive(false);
     }
-    //private void OnMouseDown()
-    //{
-    //    if (player.start == player.finish)
-    //    {
-    //        player.finish = id;
-    //    }
-    //}
 }

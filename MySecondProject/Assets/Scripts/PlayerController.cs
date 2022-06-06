@@ -19,8 +19,10 @@ public class PlayerController : MonoBehaviour
     ManagerMove managerMove;
     int updatePosPlayer;
     public bool checkFind = false;
-    [HideInInspector] public int save = 0;
+     public List<int> save = new List<int>();
     public LineRenderer line;
+    public bool checkStartGame2 = false;
+    ManagerGame1 managerGame1;
 
     void Start()
     {
@@ -30,6 +32,7 @@ public class PlayerController : MonoBehaviour
         managerEnemy = FindObjectOfType<ManagerEnemy>();
         managerMove = FindObjectOfType<ManagerMove>();
         grid = FindObjectOfType<GridManager>();
+        managerGame1 = FindObjectOfType<ManagerGame1>();
         SetPosCharater();
         i = 1;
     }
@@ -69,21 +72,55 @@ public class PlayerController : MonoBehaviour
             if (Vector2.Distance(vt, transform.position) != 0)
             {
                 start = SetPosPlayerInTile();
-                managerEnemy.listEnemy[save].FindCharater();               
+                for(int y = 0; y < save.Count; y++)
+                {
+                    managerEnemy.listEnemy[save[y]].FindCharater();               
+                }
             }
         }
+
     }
     void Update()
     {
         if (checkStart == true)
         {
-            transform.position = Vector2.MoveTowards(transform.position, line.GetPosition(0), Time.deltaTime);
-            Find();
+            start = SetPosPlayerInTile();
+            if(line.positionCount!=0)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, line.GetPosition(0), Time.deltaTime);               
+            }
+        }
+        if (checkStartGame2 == true)
+        {
+            start = SetPosPlayerInTile();
+            if (line.positionCount != 0)
+            {
+                transform.position = Vector2.MoveTowards(transform.position, line.GetPosition(0), Time.deltaTime);
+            }
+            if(start == finish)
+            {
+                checkStartGame2 = false;             
+                managerGame1.CheckFind = false;
+            }
+        }
+    }
+    public void FindGame2()
+    {
+        list.Clear();
+        if (managerMove.Dijkstra(start, finish) == true)
+        {
+            line.positionCount = list.Count;
+            for (int j = 0; j < list.Count; j++)
+            {
+                line.SetPosition(j, grid.listTiles[list[j]]);
+            }
+            checkStartGame2 = true;
         }
     }
     public void Find()
     {
-        list.Clear();        
+        list.Clear();
+        save.Clear();
         for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
         {
             start =  SetPosPlayerInTile();
@@ -95,9 +132,23 @@ public class PlayerController : MonoBehaviour
                 {
                     line.SetPosition(j, grid.listTiles[list[j]]);
                 }
-                save = i;
+                if(save.Count ==0)
+                {
+                    save.Add(i);
+                }
+                if(save.Count!=0)
+                {
+                    for(int z = 0; z < save.Count; z++)
+                    {
+                        if(i!= save[z])
+                        {
+                            save.Add(i);
+                        }
+
+                    }
+                }
                 checkStart = true;
-                break;
+                //break;
             }
         }
         //if(list.Count ==0)

@@ -18,24 +18,37 @@ public class ManagerEnemy : MonoBehaviour
             enemies.transform.name = "Enemy" + i;
             enemy = enemies.GetComponent<EnemyController>();
             enemy.a = enemies.transform.position;
-            listEnemy.Insert(i,enemy);
+            listEnemy.Insert(i,enemy);            
         }
     }
     private void Start()
     {
-
     }
 
     public void SetPosOfEnemy()
     {       
         for (int i = 0; i < listEnemy.Count; i++)
         {
-            for (int j = 0; j < grid.listTiles.Count; j++)
+            for (int j  = 0; j < grid.listTiles.Count; j++)
             {
-                if (Vector2.Distance(listEnemy[i].transform.position, grid.listTiles[j]) < 1)
+                if (Vector2.Distance(listEnemy[i].transform.position, grid.listTiles[j]) < 0.5f)
                 {
                     listEnemy[i].transform.localPosition = grid.listTiles[j];
                     listEnemy[i].startEnemy = j;
+                    //grid.UpdateObstacle(listEnemy[i].startEnemy);
+                }
+            }
+        }
+    }
+    public void BlockPosEnemy()
+    {
+        for (int i = 0; i < listEnemy.Count; i++)
+        {
+            for (int j = 0; j < grid.listTiles.Count; j++)
+            {
+                if (Vector2.Distance(listEnemy[i].transform.position, grid.listTiles[j]) < 0.5f)
+                {
+                    grid.UpdateObstacle(listEnemy[i].startEnemy);
                 }
             }
         }

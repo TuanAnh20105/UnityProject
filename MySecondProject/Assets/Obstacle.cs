@@ -10,15 +10,16 @@ public class Obstacle : MonoBehaviour
     ManagerDragAndDrop manager;
     public UnityEvent unityEvent;
     ManagerEnemy managerEnemy;
-    GridManager grid;  
+      GridManager grid;  
     public GameObject obstacle7;
     public GameObject obstacle6;
     public GameObject obstacle1, obstacle22, obstacle25, obstacle4, obstacle9;
     public VatCan vatCan;
     PlayerController player;
-
-
-
+    private void Awake()
+    {
+        GridManager.Instance.Weight();
+    }
     void Start()
     {
         manager = ManagerDragAndDrop.Instance;
@@ -54,37 +55,37 @@ public class Obstacle : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
+            
             if (hitInformation.transform.name == "Obstacle1")
             {
-                obstacle1.SetActive(false);
-                //Destroy(obstacle1);
+                Destroy(obstacle1);
                 grid.UpdateAfterDragObstacle(1);
+                grid.UpdateAfterDragObstacle(0);
             }
             if (hitInformation.transform.name == "Obstacle4")
             {
-                obstacle4.SetActive(false);
-                //Destroy(obstacle4);
+                Destroy(obstacle4);
                 grid.UpdateAfterDragObstacle(4);
+                grid.UpdateAfterDragObstacle(5);
 
             }
             if (hitInformation.transform.name == "Obstacle22")
             {
-                obstacle22.SetActive(false);
-                //Destroy(obstacle22);
+                Destroy(obstacle22);
                 grid.UpdateAfterDragObstacle(22);
+                grid.UpdateAfterDragObstacle(21);
             }
             if (hitInformation.transform.name == "Obstacle9")
             {
-                obstacle9.SetActive(false);
-                //Destroy(obstacle9);
+                Destroy(obstacle9);
                 grid.UpdateAfterDragObstacle(9);
                 grid.UpdateAfterDragObstacle(10);
             }
             if (hitInformation.transform.name == "Obstacle25")
             {
-                obstacle25.SetActive(false);
-                //Destroy(obstacle25);
+                Destroy(obstacle25);
                 grid.UpdateAfterDragObstacle(25);
+                grid.UpdateAfterDragObstacle(26);
             }
             if (hitInformation.transform.name == "Obstacle1" || hitInformation.transform.name == "Obstacle4" ||
                 hitInformation.transform.name == "Obstacle22" || hitInformation.transform.name == "Obstacle9" ||

@@ -6,7 +6,7 @@ public class ManagerGame : MonoBehaviour
 {
     // Start is called before the first frame update\
     public GameObject btnGameOver;
-        public GameObject btnGameWin;
+    public GameObject btnGameWin;
     public static ManagerGame Instance;
     private void Awake() {
         Instance = this;

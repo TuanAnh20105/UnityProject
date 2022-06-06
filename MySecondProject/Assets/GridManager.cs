@@ -12,46 +12,36 @@ public class GridManager : MonoBehaviour
     public int[,] matrix = new int[200, 200];
     [TextArea(10, 20)]
     public string weight;
-    public ManagerEnemy managerEnemy;
-    public List<int> listObstacle;
     public static GridManager Instance;
+    public List<Tile> TileList = new List<Tile>();
 
     int id = 0;
     private void Awake()
     {
         Instance = this;
-        listObstacle = new List<int> { 1,6, 7, 8, 14, 15, 4, 18, 19, 25, 20, 11, 12, 13, 22,9,10 };
         GenerateGrid();
-        Weight();
-        for (int i = 0; i < listObstacle.Count; i++)
-        {
-            UpdateObstacle(listObstacle[i]);
-        }
     }
     private void Start()
     {
-        managerEnemy = FindObjectOfType<ManagerEnemy>();
-        printMatrix();
     }
-
     public void Update()
     {
-
+        //Debug.Log(Vector2.Distance(listTiles[0], listTiles[10]).ToString());
     }
     public void GenerateGrid()
     {
-
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < hight; y++)
             {
-                var spawnTile = Instantiate(tilePref, new Vector3(x, y), Quaternion.identity);
+                Tile spawnTile = Instantiate(tilePref, new Vector3(x, y), Quaternion.identity);
                 spawnTile.name = $"Tile {x} {y}";
                 spawnTile.id = id;
                 id++;
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnTile.Init(isOffset);
                 listTiles.Add(spawnTile.transform.position);
+                TileList.Add(spawnTile);
             }
         }
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)hight / 2 - 0.5f, -10);
@@ -62,42 +52,65 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < id; y++)
             {
-                if (Vector2.Distance(listTiles[x], listTiles[y]) >= 1 && Vector2.Distance(listTiles[x], listTiles[y])<=1.2f)
+                if (Vector2.Distance(listTiles[x], listTiles[y]) >= 1 && Vector2.Distance(listTiles[x], listTiles[y])<=1.43f)
                 {
                     matrix[x, y] = 1;
                 }
-                if (Vector2.Distance(listTiles[x], listTiles[y]) > 1)
+                if (Vector2.Distance(listTiles[x], listTiles[y]) > 1.43f)
                 {
                     matrix[x, y] = 0;
                 }
             }
         }
-    }    
+    }
+    public void WeightZero()
+    {
+        for (int x = 0; x < id; x++)
+        {
+            for (int y = 0; y < id; y++)
+            {               
+                matrix[x, y] = 0;
+            }
+        }
+    }
     public void UpdateObstacle(int pos)
     {
         for (int x = 0; x < id; x++)
         {
             for (int y = 0; y < id; y++)
             {
-                if (y == pos + 1 || y == pos - 1 || y == pos - hight || y == pos + hight)
+                if (y == pos + 1 || y == pos - 1 || y == pos - hight || y == pos + hight 
+                    || y == pos +hight +1 || y == pos + hight -1 || y == pos-hight -1 || y == pos -hight +1)
                 {
                     matrix[x, pos] = 0;
                 }           
             }
             if (x == pos)
             {
-                if(pos < hight)
+                if(pos == 0 )
+                {
+                    matrix[x, pos + 1] = 0;
+                    matrix[x, pos + hight] = 0;
+                    matrix[x, pos + hight +1] = 0;
+                    matrix[x, pos + hight - 1] = 0;
+
+                }
+                else if(pos <= hight)
                 {
                     matrix[x, pos - 1] = 0;
                     matrix[x, pos + 1] = 0;
                     matrix[x, pos + hight] = 0;
+                    matrix[x, pos + hight+1] = 0;
+                    matrix[x, pos + hight-1] = 0;
                 }
                 else if (pos >=width * (hight - 1))
                 {
                     matrix[x, pos - 1] = 0;
                     matrix[x, pos + 1] = 0;
                     matrix[x, pos - hight] = 0;
-                 
+                    matrix[x, pos - hight + 1] = 0;
+                    matrix[x, pos - hight - 1] = 0;
+
                 }
                 else
                 {
@@ -105,6 +118,10 @@ public class GridManager : MonoBehaviour
                     matrix[x, pos + 1] = 0;
                     matrix[x, pos - hight] = 0;
                     matrix[x, pos + hight] = 0;
+                    matrix[x, pos + hight + 1] = 0;
+                    matrix[x, pos + hight - 1] = 0;
+                    matrix[x, pos - hight + 1] = 0;
+                    matrix[x, pos - hight - 1] = 0;
                 }
 
             }
@@ -123,25 +140,39 @@ public class GridManager : MonoBehaviour
             }
             if (x == pos)
             {
-                if(pos <hight)
+                if (pos == 0)
+                {
+                    matrix[x, pos + 1] = 1;
+                    matrix[x, pos + hight] = 1;
+                    matrix[x, pos + hight + 1] = 1;                   
+                }
+                else if (pos <=hight)
                 {
                     matrix[x, pos - 1] = 1;
-                    matrix[x, pos + 1] = 1;                   
+                    matrix[x, pos + 1] = 1;
                     matrix[x, pos + hight] = 1;
+                    matrix[x, pos + hight + 1] = 1;
+                    matrix[x, pos + hight - 1] = 1;
                 }
-                else if(pos>hight && pos <= width*(hight-1))
+                else if(pos >= width*(hight-1))
+                {
+                    matrix[x, pos - 1] = 1;
+                    matrix[x, pos + 1] = 1;
+                    matrix[x, pos - hight] = 1;
+                    matrix[x, pos - hight + 1] = 1;
+                    matrix[x, pos - hight - 1] = 1;
+                }
+                else
                 {
                     matrix[x, pos - 1] = 1;
                     matrix[x, pos + 1] = 1;
                     matrix[x, pos - hight] = 1;
                     matrix[x, pos + hight] = 1;
-                }
-                else
-                {
-                     matrix[x, pos - 1] = 1;
-                     matrix[x, pos + 1] = 1;
-                     matrix[x, pos - hight] = 1;
-                     
+                    matrix[x, pos + hight + 1] = 1;
+                    matrix[x, pos + hight - 1] = 1;
+                    matrix[x, pos - hight + 1] = 1;
+                    matrix[x, pos - hight - 1] = 1;
+
                 }
             }
         }

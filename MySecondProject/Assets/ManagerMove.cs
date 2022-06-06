@@ -6,10 +6,9 @@ public class ManagerMove : MonoBehaviour
 {
     // Start is called before the first frame update
     GridManager grid;
-    public int[,] matrix = new int[30,30];
+    public int[,] matrix = new int[200,200];
     int min;
     public PlayerController player;
-    public Tile tile;
     ManagerEnemy managerEnemy;
     void Start()
     {
@@ -143,9 +142,9 @@ public class ManagerMove : MonoBehaviour
         }
         if (connect == finishEnemy)
         {
-            //for(int i = 0; i < player.save.Count; i++)
+            for(int i = 0; i < player.save.Count; i++)
             {
-                managerEnemy.listEnemy[player.save].printPathForEnemy(temp, finishEnemy, backEnemy);
+                managerEnemy.listEnemy[player.save[i]].printPathForEnemy(temp, finishEnemy, backEnemy);
             }
             return true;
         }

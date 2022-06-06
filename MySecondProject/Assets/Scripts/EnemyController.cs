@@ -37,7 +37,6 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             for(int i = 0; i < managerEnemy.listEnemy.Count; i ++)
             {
-
                 if (Vector2.Distance(managerEnemy.listEnemy[i].transform.position, transform.position) == 0f)
                 {
                     managerEnemy.listEnemy[i].startEnemy = SetPosEnemyInTile();
@@ -52,18 +51,6 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             transform.position = Vector2.MoveTowards(transform.position, line.GetPosition(0), Time.deltaTime);
         }
-        if (checkDied == true)
-        {
-            startEnemy = finishEnemy;
-            checkStartEnemy = false;
-            for (int i = 0; i < managerEnemy.listEnemy.Count; i++)
-            {
-                managerEnemy.listEnemy[i].finishEnemy = 0;
-                managerEnemy.listEnemy[i].checkStartEnemy = false;
-                managerEnemy.listEnemy[i].checkFind = false;
-            }
-            checkDied = false;
-        }
         UpdateTextBox();
     }
     public int SetPosEnemyInTile()
@@ -72,7 +59,7 @@ public class EnemyController : MonoBehaviour, IDamageable
         {
             if (Vector2.Distance(transform.position, grid.listTiles[b]) ==0)
             {
-                updatePosEnemy = b;
+                updatePosEnemy = b;            
                 break;
             }     
         }
@@ -80,40 +67,25 @@ public class EnemyController : MonoBehaviour, IDamageable
     }
     public void FindCharater()
     {
-
-        
         for (int j = 0; j < managerEnemy.listEnemy.Count; j++)
         {
-            
             managerEnemy.listEnemy[j].startEnemy = managerEnemy.listEnemy[j].SetPosEnemyInTile();//update pos after move 
-            if (managerEnemy.listEnemy[j].startEnemy == player.finish) // check enemy have path 
+            managerEnemy.listEnemy[j].list1.Clear(); // remove all list               
+            managerEnemy.listEnemy[j].finishEnemy = player.start; // update finish
+            if (managerMove.DijkstraForEnemy(managerEnemy.listEnemy[j].startEnemy, finishEnemy) == true) // check path of enemy  
             {
-                managerEnemy.listEnemy[j].list1.Clear(); // remove all list
-                //managerEnemy.listEnemy[j].startEnemy = SetPosEnemyInTile();
-               for (int i = 0; i < managerEnemy.listEnemy.Count; i++) // move to list path 
-               {
-                    managerEnemy.listEnemy[j].finishEnemy =  player.start; // update finish
-                   if (managerMove.DijkstraForEnemy(managerEnemy.listEnemy[i].startEnemy, finishEnemy) == true) // check path of enemy  
-                   {
-                        managerEnemy.listEnemy[i].line.positionCount = managerEnemy.listEnemy[j].list1.Count;
-                        for (int a = 0; a < managerEnemy.listEnemy[i].list1.Count; a++)
-                            {
-                            managerEnemy.listEnemy[i].line.SetPosition(a, grid.listTiles[managerEnemy.listEnemy[j].list1[a]]);
-                            }   
-                       managerEnemy.listEnemy[j].checkStartEnemy = true;
-                   }
-               }
-           }
-            if (managerEnemy.listEnemy[j].list1.Count != 0)
-            {
-                Debug.Log("Enemy "+ j + "  find charater");
-                managerEnemy.listEnemy[j].checkFind = true;
+                managerEnemy.listEnemy[j].line.positionCount = managerEnemy.listEnemy[j].list1.Count;                   
+                for (int a = 0; a < managerEnemy.listEnemy[j].list1.Count; a++)
+                {
+                    managerEnemy.listEnemy[j].line.SetPosition(a, grid.listTiles[managerEnemy.listEnemy[j].list1[a]]);
+                }
+                if(managerEnemy.listEnemy[j].list1.Count!= 0)
+                {
+                    managerEnemy.listEnemy[j].checkStartEnemy = true;
+                    managerEnemy.listEnemy[j].checkFind = true;                   
+                }
             }
-            if (managerEnemy.listEnemy[j].list1.Count == 0)
-            {
-                Debug.Log("Enemy " + j + " Dont find charater");
-            }
-
+            
         }
     }
     public void printPathForEnemy(int startEnemy, int finishEnemy, int[] backEnemy)
@@ -144,11 +116,9 @@ public class EnemyController : MonoBehaviour, IDamageable
             player.checkStart = false;       
             Destroy(gameObject);
             managerEnemy.listEnemy.Remove(this);
+            player.checkFind = false;
             player.list.Clear();
             player.SetPosCharater();
-            player.Find();
-
-            checkDied = true;
             if (Damage(health) == true)
             {
                 player.health += health;
@@ -156,8 +126,7 @@ public class EnemyController : MonoBehaviour, IDamageable
                 Debug.Log("da thang");
             }   
             else
-            {
-              
+            {             
                 player.health = 0;
                 Debug.Log("da thua");
             }
