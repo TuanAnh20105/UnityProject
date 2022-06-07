@@ -417,6 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listObstacle: 
+  listObstacleUnWalkable: 
 --- !u!4 &381311990
 Transform:
   m_ObjectHideFlags: 0
@@ -688,12 +689,12 @@ PrefabInstance:
     - target: {fileID: 425826715531349328, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.4
+      value: 1.42
       objectReference: {fileID: 0}
     - target: {fileID: 425826715531349328, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.6
+      value: 5.11
       objectReference: {fileID: 0}
     - target: {fileID: 1792860803165541179, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
@@ -713,12 +714,12 @@ PrefabInstance:
     - target: {fileID: 1792860803165541181, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1792860803165541181, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1792860803165541181, guid: 5a53b7f696bf0e844adcf1c1c4f65bc2,
         type: 3}
@@ -911,6 +912,8 @@ MonoBehaviour:
   listTiles: []
   weight: 
   TileList: []
+  listHead: 
+  listLast: 
 --- !u!114 &794297221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,7 +1043,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 902934013}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: 3, z: 0}
+  m_LocalPosition: {x: 4, y: 4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1795738553}

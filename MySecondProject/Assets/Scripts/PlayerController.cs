@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public LineRenderer line;
     public bool checkStartGame2 = false;
     ManagerGame1 managerGame1;
+    int count = 0;
+    bool checkPath = false;
 
     void Start()
     {
@@ -40,11 +42,10 @@ public class PlayerController : MonoBehaviour
     {
         for (int i = 0; i < grid.listTiles.Count; i++)
         {
-            if (Vector2.Distance(transform.position, grid.listTiles[i]) < 0.5f)
+            if (Vector2.Distance(transform.position, grid.listTiles[i]) < 0.3f)
             {
                 transform.position = grid.listTiles[i];
-                start = i;
-         
+                start = i;         
                 break;
             }
         }
@@ -54,7 +55,7 @@ public class PlayerController : MonoBehaviour
     {
         for (int i = 0; i < grid.listTiles.Count; i++)
         {
-            if (Vector2.Distance(transform.position, grid.listTiles[i]) <=0.4f)
+            if (Vector2.Distance(transform.position, grid.listTiles[i]) ==0f)
             {
                 updatePosPlayer = i;
                 vt = grid.listTiles[i];
@@ -92,29 +93,48 @@ public class PlayerController : MonoBehaviour
         }
         if (checkStartGame2 == true)
         {
+            grid.UpdateObstacle(start);
             start = SetPosPlayerInTile();
             if (line.positionCount != 0)
             {
                 transform.position = Vector2.MoveTowards(transform.position, line.GetPosition(0), Time.deltaTime);
             }
-            if(start == finish)
-            {
-                checkStartGame2 = false;             
-                managerGame1.CheckFind = false;
-            }
         }
     }
     public void FindGame2()
     {
-        list.Clear();
-        if (managerMove.Dijkstra(start, finish) == true)
+        for(int i = 0; i < managerEnemy.listEnemy.Count; i++)
         {
-            line.positionCount = list.Count;
-            for (int j = 0; j < list.Count; j++)
+            finish = managerEnemy.listEnemy[i].startEnemy;
+            list.Clear();
+            if (managerMove.Dijkstra(start, finish) == true && managerEnemy.listEnemy[i].health < health)
             {
-                line.SetPosition(j, grid.listTiles[list[j]]);
+                checkPath = true;
+                line.positionCount = list.Count;
+                for (int j = 0; j < list.Count; j++)
+                {
+                    line.SetPosition(j, grid.listTiles[list[j]]);
+                }
+                checkStartGame2 = true;
+                if (save.Count == 0)
+                {
+                    save.Add(finish);
+                }
+                if (save.Count != 0)
+                {
+                    if (finish != save[save.Count - 1])
+                    {
+                        save.Add(finish);
+                    }
+                }
+                //managerGame1.CheckFind = false;
+                break;
             }
-            checkStartGame2 = true;
+            if(checkPath == false)
+            {
+
+            }
+            
         }
     }
     public void Find()
@@ -151,10 +171,6 @@ public class PlayerController : MonoBehaviour
                 //break;
             }
         }
-        //if(list.Count ==0)
-        //{
-        //    finish = -1;
-        //}
         if(list.Count != 0)
         {
             checkFind = true;
@@ -164,7 +180,7 @@ public class PlayerController : MonoBehaviour
     {
         if(other.gameObject.tag =="Enemy")
         {
-            checkFind = false;
+            //checkStartGame2 = false;
         }
     }
 

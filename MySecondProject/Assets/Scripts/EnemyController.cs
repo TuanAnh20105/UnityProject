@@ -122,6 +122,7 @@ public class EnemyController : MonoBehaviour, IDamageable
             if (Damage(health) == true)
             {
                 player.health += health;
+                player.healthText.text = player.health.ToString();
   
                 Debug.Log("da thang");
             }   

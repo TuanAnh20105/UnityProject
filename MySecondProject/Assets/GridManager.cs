@@ -14,6 +14,9 @@ public class GridManager : MonoBehaviour
     public string weight;
     public static GridManager Instance;
     public List<Tile> TileList = new List<Tile>();
+    public List<int> listHead = new List<int>();
+    public List<int> listLast = new List<int>();
+
 
     int id = 0;
     private void Awake()
@@ -37,11 +40,20 @@ public class GridManager : MonoBehaviour
                 Tile spawnTile = Instantiate(tilePref, new Vector3(x, y), Quaternion.identity);
                 spawnTile.name = $"Tile {x} {y}";
                 spawnTile.id = id;
-                id++;
+              
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnTile.Init(isOffset);
                 listTiles.Add(spawnTile.transform.position);
                 TileList.Add(spawnTile);
+                if( y == 0)
+                {
+                    listHead.Add(id);
+                }
+                if(y == hight-1)
+                {
+                    listLast.Add(id);
+                }
+                id++;
             }
         }
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)hight / 2 - 0.5f, -10);
@@ -52,11 +64,11 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < id; y++)
             {
-                if (Vector2.Distance(listTiles[x], listTiles[y]) >= 1 && Vector2.Distance(listTiles[x], listTiles[y])<=1.43f)
+                if (Vector2.Distance(listTiles[x], listTiles[y]) >= 1 && Vector2.Distance(listTiles[x], listTiles[y])<=1.5f)
                 {
                     matrix[x, y] = 1;
                 }
-                if (Vector2.Distance(listTiles[x], listTiles[y]) > 1.43f)
+                if (Vector2.Distance(listTiles[x], listTiles[y]) > 1.5f)
                 {
                     matrix[x, y] = 0;
                 }
@@ -123,7 +135,6 @@ public class GridManager : MonoBehaviour
                     matrix[x, pos - hight + 1] = 0;
                     matrix[x, pos - hight - 1] = 0;
                 }
-
             }
         }
     }
@@ -133,11 +144,12 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < id; y++)
             {
-                if (y == pos + 1 || y == pos - 1 || y == pos - hight || y == pos + hight)//10,
+                if (y == pos + 1 || y == pos - 1 || y == pos - hight || y == pos + hight 
+                    || y == pos +hight +1 || y == pos + hight -1 || y == pos-hight -1 || y == pos -hight +1)//10,
                 {
                     matrix[ y,pos] = 1;
                 }
-            }
+            }              
             if (x == pos)
             {
                 if (pos == 0)
@@ -172,8 +184,65 @@ public class GridManager : MonoBehaviour
                     matrix[x, pos + hight - 1] = 1;
                     matrix[x, pos - hight + 1] = 1;
                     matrix[x, pos - hight - 1] = 1;
-
+                }                                    
+            }
+            if(x==pos)
+            {
+                for(int i = 0; i < listHead.Count;i++)
+                {
+                    if(pos == listHead[i])
+                    {
+                        if(pos > hight && pos < width * (hight - 1))
+                        {
+                            matrix[x, pos + 1] = 1;
+                            matrix[x, pos - 1] = 0;
+                            matrix[x, pos - hight] = 1;
+                            matrix[x, pos + hight] = 1;
+                            matrix[x, pos + hight + 1] = 1;
+                            matrix[x, pos + hight - 1] = 0;
+                            matrix[x, pos - hight + 1] = 1;
+                            matrix[x, pos - hight - 1] = 0;
+                        }
+                        if (pos == 0)
+                        {
+                            matrix[x, pos + 1] = 1;
+                            matrix[x, pos + hight] = 1;
+                            matrix[x, pos + hight + 1] = 1;
+                        }
+                        if(pos == hight)
+                        {
+                            matrix[x, pos + 1] = 1;
+                            matrix[x, pos - 1] = 0;
+                            matrix[x, pos - hight] = 1;
+                            matrix[x, pos + hight] = 1;
+                            matrix[x, pos + hight + 1] = 1;
+                            matrix[x, pos + hight - 1] = 0;
+                            matrix[x, pos - hight + 1] = 1;
+                        }
+                    }
+                    if(pos == listHead[i])
+                    {
+   
+                    }
                 }
+                for (int j = 0; j < listLast.Count; j++)
+                {
+                    if (pos == listLast[j] )
+                    {
+                        if( pos > hight - 1 && pos < width * hight - 1)
+                        {
+                            matrix[x, pos - 1] = 1;
+                            matrix[x, pos + 1] = 0;
+                            matrix[x, pos - hight] = 1;
+                            matrix[x, pos + hight] = 1;
+                            matrix[x, pos + hight - 1] = 1;
+                            matrix[x, pos - hight - 1] = 1;
+                            matrix[x, pos + hight + 1] = 0;
+                            matrix[x, pos - hight + 1] = 0;
+                        }
+                    }
+                }
+
             }
         }
     }
@@ -188,6 +257,7 @@ public class GridManager : MonoBehaviour
             weight += "\n";
         }
     }
+
 
     // Update is called once per frame
 

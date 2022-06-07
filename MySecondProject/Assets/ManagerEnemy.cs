@@ -18,6 +18,7 @@ public class ManagerEnemy : MonoBehaviour
             enemies.transform.name = "Enemy" + i;
             enemy = enemies.GetComponent<EnemyController>();
             enemy.a = enemies.transform.position;
+            enemy.health = 10 * (i+1);
             listEnemy.Insert(i,enemy);            
         }
     }
@@ -35,7 +36,6 @@ public class ManagerEnemy : MonoBehaviour
                 {
                     listEnemy[i].transform.localPosition = grid.listTiles[j];
                     listEnemy[i].startEnemy = j;
-                    //grid.UpdateObstacle(listEnemy[i].startEnemy);
                 }
             }
         }
@@ -48,7 +48,7 @@ public class ManagerEnemy : MonoBehaviour
             {
                 if (Vector2.Distance(listEnemy[i].transform.position, grid.listTiles[j]) < 0.5f)
                 {
-                    grid.UpdateObstacle(listEnemy[i].startEnemy);
+                    //grid.UpdateObstacle(listEnemy[i].startEnemy);
                 }
             }
         }
