@@ -51,6 +51,7 @@ public class Obstacle : MonoBehaviour
             }
         }
     }
+    
     public void CheckInput()
     {
         if (Input.GetMouseButtonUp(0))
@@ -96,6 +97,7 @@ public class Obstacle : MonoBehaviour
                 {
                     managerEnemy.listEnemy[i].FindCharater();
                 }
+
             }
         }
     }

@@ -19,7 +19,11 @@ public class PlayerController : MonoBehaviour
     ManagerMove managerMove;
     int updatePosPlayer;
     public bool checkFind = false;
+<<<<<<< Updated upstream
      public List<int> save = new List<int>();
+=======
+    public List<int> save = new List<int>();
+>>>>>>> Stashed changes
     public LineRenderer line;
     public bool checkStartGame2 = false;
     ManagerGame1 managerGame1;
@@ -73,9 +77,15 @@ public class PlayerController : MonoBehaviour
             if (Vector2.Distance(vt, transform.position) != 0)
             {
                 start = SetPosPlayerInTile();
+<<<<<<< Updated upstream
                 for(int y = 0; y < save.Count; y++)
                 {
                     managerEnemy.listEnemy[save[y]].FindCharater();               
+=======
+                for (int x = 0; x < save.Count; x++)
+                {
+                    managerEnemy.listEnemy[save[x]].FindCharater();               
+>>>>>>> Stashed changes
                 }
             }
         }
@@ -152,6 +162,7 @@ public class PlayerController : MonoBehaviour
                 {
                     line.SetPosition(j, grid.listTiles[list[j]]);
                 }
+<<<<<<< Updated upstream
                 if(save.Count ==0)
                 {
                     save.Add(i);
@@ -167,6 +178,22 @@ public class PlayerController : MonoBehaviour
 
                     }
                 }
+=======
+                if(save.Count==0)
+                {
+                    save.Add(i);
+                }   
+                if(save.Count!=0)
+                {
+                    for(int y = 0; y < save.Count; y++)
+                    {
+                        if(i != save[y])
+                        {
+                            save.Add(i);
+                        }
+                    }
+                }               
+>>>>>>> Stashed changes
                 checkStart = true;
                 //break;
             }
