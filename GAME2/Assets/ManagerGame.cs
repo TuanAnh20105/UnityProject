@@ -13,21 +13,24 @@ public class ManagerGame : MonoBehaviour
    public bool checkSpawn = true;
     public int count = 0;
     public ManagerNumber managerNumber;
+    
 
 
     void Start()
     {
         grid = GridManager.instance;
+        
     }
     // Update is called once per frame
     void Update()
     {
-        
+
         if (checkSpawn == true)
         {
             managerNumber.Spawn();
             checkSpawn = false;
         }
+
         if (checkForce == true)
         {
             AddForce();
@@ -41,6 +44,8 @@ public class ManagerGame : MonoBehaviour
         {
             checkForce = false;
             checkSpawn = true;
+            
+            //managerNumber.list.Add(managerNumber.number);
         }
     }
     public void TouchWorld()
@@ -48,6 +53,7 @@ public class ManagerGame : MonoBehaviour
          
         if (Input.GetMouseButtonDown(0))
         {
+            managerNumber.number.check = false;
             var touchWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             touchWorld.z = 0;
             hitInformation = Physics2D.Raycast(touchWorld, Camera.main.transform.forward);

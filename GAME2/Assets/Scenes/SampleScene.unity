@@ -391,10 +391,16 @@ MonoBehaviour:
   - {fileID: 959022340265418921, guid: c58c47e5fe6ab324f9327013c9632853, type: 3}
   - {fileID: 1227019079528687411, guid: fbd1cc3601e950f4f95dcefdbc78494f, type: 3}
   - {fileID: 8172053106157368384, guid: 54becab0a157c0640922b50feb3cf4fc, type: 3}
+  listObject: []
   list: []
   temp: {fileID: 50136393}
   number: {fileID: 0}
   obj: {fileID: 0}
+  listSprite:
+  - {fileID: 21300000, guid: 8f5ce69351ca16047ac573f1a0d73599, type: 3}
+  - {fileID: 21300000, guid: eb97e5e0b2533fb41b6d739ea7aadd94, type: 3}
+  - {fileID: 21300000, guid: a691bf7a3e9fdde43abe5e45d196ffb2, type: 3}
+  - {fileID: 21300000, guid: 469932ba3cf16a94890264cf792fcaf4, type: 3}
 --- !u!4 &1951516049
 Transform:
   m_ObjectHideFlags: 0

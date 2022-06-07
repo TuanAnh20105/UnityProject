@@ -8,27 +8,20 @@ public class ManagerNumber : MonoBehaviour
     public int id;
     // Start is called before the first frame update
     public List<GameObject> listNumber;
+    public List<GameObject> listObject;
     public List<Number> list;
-    public GameObject temp;
-    [HideInInspector] public Number number;
-    public GameObject obj;
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+     public GameObject temp;
+     public Number number;
+     public GameObject obj;
+    public List<Sprite> listSprite = new List<Sprite>();
     public void Spawn()
     {
         int ran = Random.Range(0, listNumber.Count);
         obj = Instantiate(listNumber[ran], temp.transform.position, temp.transform.rotation);
+        listObject.Add(obj);
         number = obj.GetComponent<Number>();
-        list.Add(number);
         number.transform.position = obj.transform.position;
+        list.Add(number);
         for (int i = 0; i < listNumber.Count; i++)
         {
             if (ran == i)
