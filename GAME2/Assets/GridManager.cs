@@ -35,7 +35,7 @@ public class GridManager : MonoBehaviour
                 Tile spawnTile = Instantiate(tilePref, new Vector3(x, y), Quaternion.identity);
                 spawnTile.name = $"Tile {x} {y}";
                 spawnTile.id = id;
-
+                matrix[x, y] = 0;
                 var isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
                 spawnTile.Init(isOffset);
                 listTiles.Add(spawnTile.transform.position);
@@ -44,5 +44,6 @@ public class GridManager : MonoBehaviour
             }
         }
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)hight / 2 - 0.5f, -10);
+        
     }
 }
