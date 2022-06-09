@@ -11,8 +11,9 @@ public class Number : MonoBehaviour
     public int id;
     public int ma;
     GridManager grid;
-    int temp;
-    public bool check = false;
+    private int temp;
+    public bool check = false,checkDelete = false;
+    int y, x;
 
     void Start()
     {
@@ -22,60 +23,65 @@ public class Number : MonoBehaviour
 
     }
     public void Check()
-    {
-        if(managerNumber.list.Count > 1)
+    {      
+        for(int i = managerNumber.list.Count - 2; i >= 0;i--)
         {
-            for(int i = managerNumber.list.Count - 2; i >= 0;i--)
+            if (Vector2.Distance(managerNumber.number.transform.position, managerNumber.list[i].transform.position) <= 1.4f 
+                && managerNumber.number.id == managerNumber.list[i].id && managerNumber.list.Count>1)
             {
-                if (Vector2.Distance(managerNumber.number.transform.position, managerNumber.list[i].transform.position) <= 1.4f 
-                    && managerNumber.number.ma != managerNumber.list[i].ma && managerNumber.number.id == managerNumber.list[i].id)
-                {
-                    temp = i;
-                    managerNumber.number.spriteRender.sprite = managerNumber.listSprite[id];
-                    managerNumber.number.id = managerNumber.list[i].id  +1 ;
-                    managerNumber.number.transform.name = Mathf.Pow(2, managerNumber.list[i].id + 1).ToString();
-                    grid.matrix[managerGame.temp1, managerGame.temp2] = 0;
-                    float x = managerNumber.list[i].transform.position.x;    
-                    float y  = managerNumber.list[i].transform.position.y;                          
-                    if (y == managerGame.temp2 + 1)
-                    {
-                        grid.matrix[managerGame.temp1, managerGame.temp2 +1] = 0;
-                    }
-                    if(x == managerGame.temp1 - 1)
-                    {
-                        grid.matrix[managerGame.temp1-1, managerGame.temp2] = 0;
-                    }         
-                    if(x == managerGame.temp1+1)
-                    {
-                        grid.matrix[managerGame.temp1+1, managerGame.temp2] = 0;
-                    }
-                    managerNumber.list.RemoveAt(i);                  
-                    Destroy(managerNumber.listObject[i]);
-                    managerNumber.listObject.RemoveAt(i);                        
-                    managerGame.CheckColoume();
-                    managerGame.GetElementsInColumn(x);
-                    managerGame.checkPos((int)x);
-                   
-                }
-            }
-
-        }
-        //managerGame.checkSpawn = true;
-    }
-    private void Update()
-    {
-
-    }
-    public void SetPosNumber()
-    {
-        for (int i = 0; i < grid.listTiles.Count; i++)
-        {
-            if (Vector2.Distance(transform.position, grid.listTiles[i]) < 0.3f)
-            {
-                transform.position = grid.listTiles[i];
-                break;
+                CheckNodeMix(i);
+                CheckDirectNodeMix(i);
+                RemoveNodeMix(i);
+                
+                CheckUpdateNode();
+                return;
             }
         }
 
+        
+    }
+    public void CheckNodeMix(int i)
+    {
+        this.temp = i;
+        managerNumber.number.spriteRender.sprite = managerNumber.listSprite[id];
+        managerNumber.number.id = managerNumber.list[i].id + 1;
+        managerNumber.number.transform.name = Mathf.Pow(2, managerNumber.list[i].id + 1).ToString();
+        grid.matrix[managerGame.temp1, managerGame.temp2] = 0;
+    }
+    public void CheckDirectNodeMix(int i)
+    {
+        x = (int)Mathf.Round(managerNumber.list[i].transform.position.x);
+        y = (int)Mathf.Round(managerNumber.list[i].transform.position.y);
+        if (y == managerGame.temp2 + 1)
+        {
+            grid.matrix[managerGame.temp1, managerGame.temp2 + 1] = 0;
+        }
+        else if (x == managerGame.temp1 - 1)
+        {
+            grid.matrix[managerGame.temp1 - 1, managerGame.temp2] = 0;
+        }
+        else if (x == managerGame.temp1 + 1)
+        {
+            grid.matrix[managerGame.temp1 + 1, managerGame.temp2] = 0;
+        }
+    }
+    public void RemoveNodeMix(int i)
+    {
+        managerNumber.list.RemoveAt(i);
+        Destroy(managerNumber.listObject[i]);
+        managerNumber.listObject.RemoveAt(i);
+    }
+    public void CheckUpdateNode()
+    {
+        managerGame.CheckColoume();
+        if (x == managerGame.temp1 - 1 || x == managerGame.temp1 + 1)
+        {
+            grid.matrix[(int)managerNumber.number.transform.position.x, (int)managerNumber.number.transform.position.y] = 1;
+            managerGame.GetElementsInColumn(x);
+            managerGame.checkPos(x);
+        }
+
+        
+        
     }
 }

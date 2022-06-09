@@ -145,3 +145,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRender: {fileID: 6904558392169981205}
   id: 0
+  ma: 0
+  check: 0
+  checkDelete: 0

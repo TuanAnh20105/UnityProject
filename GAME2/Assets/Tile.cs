@@ -17,15 +17,15 @@ public class Tile : MonoBehaviour
     {
         _renderer.color = isOffset ? offsetColor : baseColor;
     }
-    //private void OnMouseEnter()
-    //{
-    //    hightLight.SetActive(true);
+    private void OnMouseEnter()
+    {
+        hightLight.SetActive(true);
 
-    //}
-    //private void OnMouseExit()
-    //{
-    //    hightLight.SetActive(false);
-    //}
+    }
+    private void OnMouseExit()
+    {
+        hightLight.SetActive(false);
+    }
     private void OnMouseDown()
     {
         managerGame.a = id;

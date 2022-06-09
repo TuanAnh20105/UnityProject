@@ -287,6 +287,8 @@ MonoBehaviour:
   temp2: 0
   checkSpawn: 1
   managerNumber: {fileID: 1951516048}
+  listSwap: []
+  listNumsInCol: []
 --- !u!4 &222469052
 Transform:
   m_ObjectHideFlags: 0
@@ -1004,6 +1006,8 @@ MonoBehaviour:
   - {fileID: 959022340265418921, guid: c58c47e5fe6ab324f9327013c9632853, type: 3}
   - {fileID: 1227019079528687411, guid: fbd1cc3601e950f4f95dcefdbc78494f, type: 3}
   - {fileID: 8172053106157368384, guid: 54becab0a157c0640922b50feb3cf4fc, type: 3}
+  - {fileID: 141336367468925055, guid: 45b5ed0d3a0caed4ab5aa7c0e6b4424d, type: 3}
+  - {fileID: 6062372823779787844, guid: 75ff867d5ba572d49a47ba23fd0762ad, type: 3}
   listObject: []
   list: []
   temp: {fileID: 50136393}
@@ -1013,7 +1017,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 8f5ce69351ca16047ac573f1a0d73599, type: 3}
   - {fileID: 21300000, guid: eb97e5e0b2533fb41b6d739ea7aadd94, type: 3}
   - {fileID: 21300000, guid: a691bf7a3e9fdde43abe5e45d196ffb2, type: 3}
-  - {fileID: 21300000, guid: 469932ba3cf16a94890264cf792fcaf4, type: 3}
+  - {fileID: 21300000, guid: c9179f0534523a04d8fe3a2c4c8fb4ec, type: 3}
+  - {fileID: 21300000, guid: 3168515e1cb80ca4e86343ca760a00b8, type: 3}
+  - {fileID: 21300000, guid: fc115f72186221a4fb33e47f67d793c6, type: 3}
 --- !u!4 &1951516049
 Transform:
   m_ObjectHideFlags: 0

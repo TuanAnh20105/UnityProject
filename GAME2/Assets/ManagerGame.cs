@@ -18,7 +18,8 @@ public class ManagerGame : MonoBehaviour
     bool checkClickFunction1 = false;
     bool checkClickFunction2 = false;
     public List<Number> listSwap = new List<Number>();
-    public List<Number> listNumsInCol = new List<Number>();
+    public List<Number> listNumsInCol = new List<Number>();    
+    List<Number> ListTemp = new List<Number>();
     Number temp= new Number();
     void Start()
     {
@@ -34,10 +35,7 @@ public class ManagerGame : MonoBehaviour
             managerNumber.Spawn();
             checkSpawn = false;
         }
-        if(checkClickInGame ==true)
-        {
-            TouchWorld();
-        }
+
         if(checkClickFunction1 == true)
         {
             DestoyNumber();
@@ -46,8 +44,11 @@ public class ManagerGame : MonoBehaviour
         {
             SwapNumber();
         }
-    }
-    
+        if (checkClickInGame == true)
+        {
+            TouchWorld();
+        }
+    }   
     public void CheckColoume()
     {
         for(int i = grid.hight-1; i >=0 ; i--)
@@ -55,34 +56,47 @@ public class ManagerGame : MonoBehaviour
             if(grid.matrix[temp1,i] == 0)
             {
                 managerNumber.number.transform.position = new Vector2(temp1, i);
-                checkSpawn = true;
                 grid.matrix[temp1, i] = 1;
                 temp2 = i;
-                managerNumber.number.Check();
-                break;
+                if(managerNumber.list.Count > 1)
+                {
+                    managerNumber.number.Check();
+                }
+                return;
             }
         }
     }
     public void checkPos(int column)
     {
-        for (int j = 0; j < listNumsInCol.Count; j++)
+        while(ListTemp.Count !=0)
         {
             for (int i = grid.hight - 1; i >= 0; i--)
             {
                 if (grid.matrix[column, i] == 0)
                 {
-                    int row = (int)listNumsInCol[j].transform.position.x;
-                    int column1 = (int)listNumsInCol[j].transform.position.y;
-                    listNumsInCol[j].transform.position = new Vector2(column, i);
-                    grid.matrix[row, column1] = 0;
-                    checkSpawn = true;
-                    grid.matrix[column, i] = 1;
+                    int row = (int)ListTemp[0].transform.position.x;
+                    int column1 = (int)ListTemp[0].transform.position.y;
+                    if(column1 != 7)
+                    {
+                        ListTemp[0].transform.position = new Vector2(column, i);
+                        grid.matrix[row, column1] = 0;
+                        grid.matrix[column, i] = 1;
+                        managerNumber.number.Check();
+                    }
+                    else
+                    {
+                        grid.matrix[row, column1] = 1;
+                    }
                     temp2 = i;
-                    //managerNumber.number.Check();
+                    ListTemp.RemoveAt(0);
                     break;
                 }
             }
         }
+    }
+    public void CheckAferDestroy(List<Number> list)
+    {
+        
     }
     public void GetElementsInColumn(float x)
     {
@@ -93,28 +107,36 @@ public class ManagerGame : MonoBehaviour
             {
                 listNumsInCol.Add(managerNumber.list[i]);
             }
-        }       
+        }
+        ListTemp = listNumsInCol;
+        
     }
     public void TouchWorld()
     {      
-        if (Input.GetMouseButtonDown(0))
         {
-            managerNumber.number.check = false;
-            var touchWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            touchWorld.z = 0;
-            hitInformation = Physics2D.Raycast(touchWorld, Camera.main.transform.forward);
-            if (hitInformation.collider != null )
+            Debug.Log("Touch");
+            if (Input.GetMouseButtonDown(0))
             {
-                int x = a /GridManager.instance.hight;
-                for(int i = 0; i < GridManager.instance.width; i++)
+                managerNumber.number.check = false;
+                var touchWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                touchWorld.z = 0;
+                hitInformation = Physics2D.Raycast(touchWorld, Camera.main.transform.forward);
+                if (hitInformation.collider != null && hitInformation.collider.tag != "btn")
                 {
-                    if(x == i)
+                    int x = a /GridManager.instance.hight;
+                    for(int i = 0; i < GridManager.instance.width; i++)
                     {
-                        managerNumber.number.transform.position = new Vector2(i, 0);
-                        temp1 = i;
+                        if(x == i)
+                        {
+                            managerNumber.number.transform.position = new Vector2(i, 0);
+                            temp1 = i;
+                        }
                     }
+                    checkClickInGame = true;
+                    CheckColoume();
+                    if(checkClickInGame == true && checkClickFunction1 == false && checkClickFunction2 == false)
+                        checkSpawn = true;
                 }
-                CheckColoume();
             }
         }
     }
@@ -124,14 +146,17 @@ public class ManagerGame : MonoBehaviour
         checkClickFunction1 = true;
         if (Input.GetMouseButtonDown(0))
         {
+
+            Debug.Log("Da vao day");
             var touchWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             touchWorld.z = 0;
             hitInformation = Physics2D.Raycast(touchWorld, Camera.main.transform.forward);
             if (hitInformation.collider.tag== "Number")
             {
-                for(int i = 0; i < managerNumber.list.Count;i++)
+                Debug.Log("Da vao day");
+                for (int i = 0; i < managerNumber.list.Count;i++)
                 {
-                    if (Vector2.Distance(managerNumber.list[i].transform.position, hitInformation.transform.position) <= 0.3f)
+                    if (Vector2.Distance(managerNumber.list[i].transform.position, hitInformation.transform.position) < 1f)
                     {
                         int x = (int)managerNumber.list[i].transform.position.x;
                         int y = (int)managerNumber.list[i].transform.position.y;
