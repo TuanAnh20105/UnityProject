@@ -48,7 +48,16 @@ public class ManagerGame : MonoBehaviour
         {
             TouchWorld();
         }
-    }   
+    }
+    public void CheckMixColumn()
+    {
+        for(int  i = 0; i < ListTemp.Count; i++)
+        {
+            managerNumber.number = listNumsInCol[i];
+            managerNumber.number.Check();
+        }
+    }
+
     public void CheckColoume()
     {
         for(int i = grid.hight-1; i >=0 ; i--)
@@ -68,27 +77,21 @@ public class ManagerGame : MonoBehaviour
     }
     public void checkPos(int column)
     {
-        while(ListTemp.Count !=0)
+        while(listNumsInCol.Count !=0)
         {
             for (int i = grid.hight - 1; i >= 0; i--)
             {
                 if (grid.matrix[column, i] == 0)
                 {
-                    int row = (int)ListTemp[0].transform.position.x;
-                    int column1 = (int)ListTemp[0].transform.position.y;
-                    if(column1 != 7)
+                    int row = (int)listNumsInCol[0].transform.position.x;
+                    int column1 = (int)listNumsInCol[0].transform.position.y;
+                    if(column1 < managerNumber.number.transform.position.y)
                     {
-                        ListTemp[0].transform.position = new Vector2(column, i);
+                        listNumsInCol[0].transform.position = new Vector2(column, i);
                         grid.matrix[row, column1] = 0;
                         grid.matrix[column, i] = 1;
-                        managerNumber.number.Check();
                     }
-                    else
-                    {
-                        grid.matrix[row, column1] = 1;
-                    }
-                    temp2 = i;
-                    ListTemp.RemoveAt(0);
+                    listNumsInCol.RemoveAt(0);
                     break;
                 }
             }
@@ -103,12 +106,13 @@ public class ManagerGame : MonoBehaviour
         listNumsInCol.Clear();
         for(int i = 0; i < managerNumber.list.Count; i++)
         {
-            if (managerNumber.list[i].transform.position.x == x)
+            if (managerNumber.list[i].transform.position.x == x)    
             {
                 listNumsInCol.Add(managerNumber.list[i]);
+                ListTemp.Add(managerNumber.list[i]);
             }
         }
-        ListTemp = listNumsInCol;
+        //ListTemp = listNumsInCol;
         
     }
     public void TouchWorld()

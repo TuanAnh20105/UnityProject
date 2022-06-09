@@ -76,9 +76,10 @@ public class Number : MonoBehaviour
         managerGame.CheckColoume();
         if (x == managerGame.temp1 - 1 || x == managerGame.temp1 + 1)
         {
-            grid.matrix[(int)managerNumber.number.transform.position.x, (int)managerNumber.number.transform.position.y] = 1;
+            //grid.matrix[(int)managerNumber.number.transform.position.x, (int)managerNumber.number.transform.position.y] = 1;
             managerGame.GetElementsInColumn(x);
             managerGame.checkPos(x);
+            //managerGame.CheckMixColumn();
         }
 
         
