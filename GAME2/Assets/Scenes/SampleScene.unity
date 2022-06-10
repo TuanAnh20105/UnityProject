@@ -289,6 +289,7 @@ MonoBehaviour:
   managerNumber: {fileID: 1951516048}
   listSwap: []
   listNumsInCol: []
+  ListTemp: []
 --- !u!4 &222469052
 Transform:
   m_ObjectHideFlags: 0
@@ -464,9 +465,10 @@ GameObject:
   - component: {fileID: 557692917}
   - component: {fileID: 557692916}
   - component: {fileID: 557692915}
+  - component: {fileID: 557692918}
   m_Layer: 5
   m_Name: Swap
-  m_TagString: Untagged
+  m_TagString: Btn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -582,6 +584,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 557692913}
   m_CullTransparentMesh: 0
+--- !u!61 &557692918
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 557692913}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1028797706
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,9 +830,10 @@ GameObject:
   - component: {fileID: 1558391988}
   - component: {fileID: 1558391987}
   - component: {fileID: 1558391986}
+  - component: {fileID: 1558391989}
   m_Layer: 5
   m_Name: Destroy
-  m_TagString: Untagged
+  m_TagString: Btn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -920,6 +949,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558391984}
   m_CullTransparentMesh: 0
+--- !u!61 &1558391989
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558391984}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &1608652465
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,6 +1063,7 @@ MonoBehaviour:
   - {fileID: 8172053106157368384, guid: 54becab0a157c0640922b50feb3cf4fc, type: 3}
   - {fileID: 141336367468925055, guid: 45b5ed0d3a0caed4ab5aa7c0e6b4424d, type: 3}
   - {fileID: 6062372823779787844, guid: 75ff867d5ba572d49a47ba23fd0762ad, type: 3}
+  - {fileID: 5157541474878180713, guid: 5af57ccb1167e884f9869cff0a94407c, type: 3}
   listObject: []
   list: []
   temp: {fileID: 50136393}
@@ -1020,6 +1076,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c9179f0534523a04d8fe3a2c4c8fb4ec, type: 3}
   - {fileID: 21300000, guid: 3168515e1cb80ca4e86343ca760a00b8, type: 3}
   - {fileID: 21300000, guid: fc115f72186221a4fb33e47f67d793c6, type: 3}
+  - {fileID: 21300000, guid: da755bd67a6a4fa4eab50941b0eddb2e, type: 3}
 --- !u!4 &1951516049
 Transform:
   m_ObjectHideFlags: 0

@@ -11,8 +11,8 @@ public class Number : MonoBehaviour
     public int id;
     public int ma;
     GridManager grid;
-    private int temp;
     public bool check = false,checkDelete = false;
+    Number number;
     int y, x;
 
     void Start()
@@ -22,33 +22,33 @@ public class Number : MonoBehaviour
         managerNumber = FindObjectOfType<ManagerNumber>();
 
     }
-    public void Check()
-    {      
-        for(int i = managerNumber.list.Count - 2; i >= 0;i--)
+    public void Check(Number number)
+    {
+        this.number = number;
+        for(int i = managerNumber.list.Count - 1; i >= 0;i--)// co 1 loi -1 o day 
         {
-            if (Vector2.Distance(managerNumber.number.transform.position, managerNumber.list[i].transform.position) <= 1.4f 
-                && managerNumber.number.id == managerNumber.list[i].id && managerNumber.list.Count>1)
+            if (Vector2.Distance(number.transform.position, managerNumber.list[i].transform.position) <= 1.1f 
+                && number.id == managerNumber.list[i].id && managerNumber.list.Count>1 && number.ma != managerNumber.list[i].ma)
             {
-                CheckNodeMix(i);
+                CheckNodeMix(number,i);
                 CheckDirectNodeMix(i);
-                RemoveNodeMix(i);
-                
+                RemoveNodeMix(i);               
                 CheckUpdateNode();
                 return;
             }
-        }
-
-        
+        }        
     }
-    public void CheckNodeMix(int i)
+
+    public void CheckNodeMix( Number number ,int i) // update node++
     {
-        this.temp = i;
-        managerNumber.number.spriteRender.sprite = managerNumber.listSprite[id];
-        managerNumber.number.id = managerNumber.list[i].id + 1;
-        managerNumber.number.transform.name = Mathf.Pow(2, managerNumber.list[i].id + 1).ToString();
+        managerGame.temp1 = (int)number.transform.position.x; 
+        managerGame.temp2 = (int)number.transform.position.y; 
+        number.spriteRender.sprite = managerNumber.listSprite[id];
+        number.id = managerNumber.list[i].id + 1;
+        number.transform.name = Mathf.Pow(2, managerNumber.list[i].id + 1).ToString();
         grid.matrix[managerGame.temp1, managerGame.temp2] = 0;
     }
-    public void CheckDirectNodeMix(int i)
+    public void CheckDirectNodeMix(int i) // update pos of node
     {
         x = (int)Mathf.Round(managerNumber.list[i].transform.position.x);
         y = (int)Mathf.Round(managerNumber.list[i].transform.position.y);
@@ -65,24 +65,20 @@ public class Number : MonoBehaviour
             grid.matrix[managerGame.temp1 + 1, managerGame.temp2] = 0;
         }
     }
-    public void RemoveNodeMix(int i)
+    public void RemoveNodeMix(int i) // remove node mix
     {
         managerNumber.list.RemoveAt(i);
         Destroy(managerNumber.listObject[i]);
         managerNumber.listObject.RemoveAt(i);
     }
-    public void CheckUpdateNode()
+    public void CheckUpdateNode() // check 
     {
-        managerGame.CheckColoume();
+        managerGame.CheckColoume(number);
         if (x == managerGame.temp1 - 1 || x == managerGame.temp1 + 1)
         {
-            //grid.matrix[(int)managerNumber.number.transform.position.x, (int)managerNumber.number.transform.position.y] = 1;
             managerGame.GetElementsInColumn(x);
-            managerGame.checkPos(x);
-            //managerGame.CheckMixColumn();
+            managerGame.checkPos(x, managerNumber.number);
+            managerGame.CheckAferDestroy(managerGame.ListTemp);
         }
-
-        
-        
     }
 }

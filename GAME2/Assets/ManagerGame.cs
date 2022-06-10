@@ -19,15 +19,13 @@ public class ManagerGame : MonoBehaviour
     bool checkClickFunction2 = false;
     public List<Number> listSwap = new List<Number>();
     public List<Number> listNumsInCol = new List<Number>();    
-    List<Number> ListTemp = new List<Number>();
+    public List<Number> ListTemp = new List<Number>();
     Number temp= new Number();
     void Start()
     {
         grid = GridManager.instance;
-        temp = FindObjectOfType<Number>();
-        
+        temp = FindObjectOfType<Number>();        
     }
-    // Update is called once per frame
     void Update()
     {
         if (checkSpawn == true)
@@ -49,34 +47,26 @@ public class ManagerGame : MonoBehaviour
             TouchWorld();
         }
     }
-    public void CheckMixColumn()
-    {
-        for(int  i = 0; i < ListTemp.Count; i++)
-        {
-            managerNumber.number = listNumsInCol[i];
-            managerNumber.number.Check();
-        }
-    }
-
-    public void CheckColoume()
+    public void CheckColoume(Number number)
     {
         for(int i = grid.hight-1; i >=0 ; i--)
         {
             if(grid.matrix[temp1,i] == 0)
             {
-                managerNumber.number.transform.position = new Vector2(temp1, i);
+                number.transform.position = new Vector2(temp1, i);
                 grid.matrix[temp1, i] = 1;
                 temp2 = i;
                 if(managerNumber.list.Count > 1)
                 {
-                    managerNumber.number.Check();
+                    number.Check(managerNumber.number);
                 }
                 return;
             }
         }
     }
-    public void checkPos(int column)
+    public void checkPos(int column , Number number)
     {
+        ListTemp.Clear();
         while(listNumsInCol.Count !=0)
         {
             for (int i = grid.hight - 1; i >= 0; i--)
@@ -85,11 +75,40 @@ public class ManagerGame : MonoBehaviour
                 {
                     int row = (int)listNumsInCol[0].transform.position.x;
                     int column1 = (int)listNumsInCol[0].transform.position.y;
-                    if(column1 < managerNumber.number.transform.position.y)
+                    if(column1 < number.transform.position.y && column1 !=0)
                     {
                         listNumsInCol[0].transform.position = new Vector2(column, i);
                         grid.matrix[row, column1] = 0;
                         grid.matrix[column, i] = 1;
+                        ListTemp.Add(listNumsInCol[0]);
+                    }
+                    listNumsInCol.RemoveAt(0);
+                    break;
+                }
+            }
+        }
+        if (ListTemp.Count != 0)
+        {
+            managerNumber.number.Check(managerNumber.number);
+        }
+    }
+    public void CheckPosDestroy(int column, Number number)
+    {
+        ListTemp.Clear();
+        while (listNumsInCol.Count != 0)
+        {
+            for (int i = grid.hight - 1; i >= 0; i--)
+            {
+                if (grid.matrix[column, i] == 0)
+                {
+                    int row = (int)listNumsInCol[0].transform.position.x;
+                    int column1 = (int)listNumsInCol[0].transform.position.y;
+                    if (column1 < number.transform.position.y && column1 != 0)
+                    {
+                        listNumsInCol[0].transform.position = new Vector2(column, i);
+                        grid.matrix[row, column1] = 0;
+                        grid.matrix[column, i] = 1;
+                        ListTemp.Add(listNumsInCol[0]);
                     }
                     listNumsInCol.RemoveAt(0);
                     break;
@@ -99,20 +118,21 @@ public class ManagerGame : MonoBehaviour
     }
     public void CheckAferDestroy(List<Number> list)
     {
-        
+        for (int i = 0; i < list.Count; i++)
+        {
+            list[i].Check(list[i]);
+        }
     }
     public void GetElementsInColumn(float x)
     {
         listNumsInCol.Clear();
         for(int i = 0; i < managerNumber.list.Count; i++)
         {
-            if (managerNumber.list[i].transform.position.x == x)    
+            if (managerNumber.list[i].transform.position.x == x && managerNumber.list[i].transform.position.y !=0)    
             {
                 listNumsInCol.Add(managerNumber.list[i]);
-                ListTemp.Add(managerNumber.list[i]);
             }
         }
-        //ListTemp = listNumsInCol;
         
     }
     public void TouchWorld()
@@ -137,10 +157,10 @@ public class ManagerGame : MonoBehaviour
                         }
                     }
                     checkClickInGame = true;
-                    CheckColoume();
+                    CheckColoume(managerNumber.number);
                     if(checkClickInGame == true && checkClickFunction1 == false && checkClickFunction2 == false)
                         checkSpawn = true;
-                }
+                } 
             }
         }
     }
@@ -150,18 +170,16 @@ public class ManagerGame : MonoBehaviour
         checkClickFunction1 = true;
         if (Input.GetMouseButtonDown(0))
         {
-
-            Debug.Log("Da vao day");
             var touchWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             touchWorld.z = 0;
             hitInformation = Physics2D.Raycast(touchWorld, Camera.main.transform.forward);
             if (hitInformation.collider.tag== "Number")
             {
-                Debug.Log("Da vao day");
                 for (int i = 0; i < managerNumber.list.Count;i++)
                 {
                     if (Vector2.Distance(managerNumber.list[i].transform.position, hitInformation.transform.position) < 1f)
                     {
+                        Number temp = managerNumber.list[i];
                         int x = (int)managerNumber.list[i].transform.position.x;
                         int y = (int)managerNumber.list[i].transform.position.y;
                         grid.matrix[x, y] = 0;
@@ -171,8 +189,9 @@ public class ManagerGame : MonoBehaviour
                         managerNumber.listObject.RemoveAt(i);
                         temp1 = x;
                         temp2 = y;
-                        GetElementsInColumn(x);        
-                        checkPos(x);
+                        GetElementsInColumn(x);                     
+                        CheckPosDestroy(x,temp);
+                        CheckAferDestroy(ListTemp);
                         checkClickInGame = true;
                         checkClickFunction1 = false;
                     }
@@ -188,45 +207,47 @@ public class ManagerGame : MonoBehaviour
             {
                 var touchWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 touchWorld.z = 0;
-                hitInformation = Physics2D.Raycast(touchWorld, Camera.main.transform.forward);
-                
-                    if (hitInformation.collider.tag == "Number")
-                    {                    
-                        for (int i = 0; i < managerNumber.list.Count; i++)
-                        {                            
-                            if (Vector2.Distance(managerNumber.list[i].transform.position, hitInformation.transform.position) <= 0.5f)
+                hitInformation = Physics2D.Raycast(touchWorld, Camera.main.transform.forward);               
+                if (hitInformation.collider.tag == "Number")
+                {                    
+                    for (int i = 0; i < managerNumber.list.Count; i++)
+                    {                            
+                        if (Vector2.Distance(managerNumber.list[i].transform.position, hitInformation.transform.position) <= 0.5f)
+                        {
+                            if(listSwap.Count ==0)
                             {
-                                if(listSwap.Count ==0)
+                                listSwap.Add(managerNumber.list[i]);
+                            }
+                            if(listSwap.Count!=0)
+                            {
+                                if(managerNumber.list[i]!=listSwap[listSwap.Count-1])
                                 {
                                     listSwap.Add(managerNumber.list[i]);
                                 }
-                                if(listSwap.Count!=0)
-                                {
-                                    if(managerNumber.list[i]!=listSwap[listSwap.Count-1])
-                                    {
-                                        listSwap.Add(managerNumber.list[i]);
-                                    }
-                                }
-                                break;
-                            }                           
-                        }
-                    }                                    
+                            }
+                            break;
+                        }                           
+                    }
+                }                                    
                 if(listSwap.Count == 2)
                 {
                     var a = Instantiate(managerNumber.listNumber[1]);
                     temp = a.GetComponent<Number>();
                     temp.spriteRender.sprite = listSwap[0].spriteRender.sprite;
                     temp.id = listSwap[0].id;
-                    temp.ma = listSwap[0].ma;// luu thg 0 ra thg khac
+                    temp.ma = listSwap[0].ma;
+                    temp.transform.name = listSwap[0].transform.name;
                     listSwap[0].spriteRender.sprite = listSwap[1].spriteRender.sprite;
                     listSwap[0].id = listSwap[1].id;
                     listSwap[0].ma = listSwap[1].ma;
+                    listSwap[0].transform.name = listSwap[1].transform.name;
                     listSwap[1].spriteRender.sprite = temp.spriteRender.sprite;
                     listSwap[1].id = temp.id;
                     listSwap[1].ma = temp.ma;
+                    listSwap[1].transform.name = temp.transform.name;
                     Destroy(temp);
-                    Destroy(a);
-                    listSwap.Clear();    
+                    Destroy(a); 
+                    CheckAferDestroy(listSwap);
                     checkClickInGame = true;
                     checkClickFunction2 = false;
                 }
