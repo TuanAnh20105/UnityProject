@@ -8,10 +8,10 @@ public class Tile : MonoBehaviour
     public int id;
     public GameObject hightLight;
     public SpriteRenderer _renderer;
-    ManagerGame managerGame;
+    public PlayerController player;
     private void Start()
     {
-        managerGame = FindObjectOfType<ManagerGame>();
+        player = FindObjectOfType<PlayerController>();
     }
     public void Init(bool isOffset)
     {
@@ -28,6 +28,6 @@ public class Tile : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        managerGame.a = id;
+      player.touch.a = id;
     }
 }

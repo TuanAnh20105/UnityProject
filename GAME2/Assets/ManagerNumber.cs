@@ -15,6 +15,11 @@ public class ManagerNumber : MonoBehaviour
     public GameObject obj;
     public List<Sprite> listSprite = new List<Sprite>();
     int x = 0;
+    public static ManagerNumber instance;
+    private void Awake()
+    {
+        instance = this;
+    }
     public void Spawn()
     {
         int ran = Random.Range(0, listNumber.Count-4);
