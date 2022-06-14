@@ -5,29 +5,29 @@ using UnityEngine;
 public class DestroyNumber : MonoBehaviour
 {
     public bool checkDestroy = false;
-    public void DestoyNumber(PlayerController player , ManagerGame managerGame)
+    public void DestoyNumber(PlayerController player , ManagerNumber managerNumber)
     {
             
             player.touch.Touch();
             if(player.touch.hitInformation.collider != null)
             {          
-                for (int i = 0; i < ManagerNumber.instance.list.Count; i++)
+                for (int i = 0; i < managerNumber.list.Count; i++)
                 {
-                    if (Vector2.Distance(ManagerNumber.instance.list[i].transform.position, player.touch.hitInformation.transform.position) < 1f)
+                    if (Vector2.Distance(managerNumber.list[i].transform.position, player.touch.hitInformation.transform.position) < 1f)
                     {
-                        Number temp = ManagerNumber.instance.list[i];
-                        int x = (int)ManagerNumber.instance.list[i].transform.position.x;
-                        int y = (int)ManagerNumber.instance.list[i].transform.position.y;
+                        Number temp = managerNumber.list[i];
+                        int x = (int)managerNumber.list[i].transform.position.x;
+                        int y = (int)managerNumber.list[i].transform.position.y;
                         GridManager.instance.matrix[x, y] = 0;                                                
-                        Destroy(ManagerNumber.instance.list[i]);
-                        ManagerNumber.instance.list.RemoveAt(i);
-                        Destroy(ManagerNumber.instance.listObject[i]);
-                        ManagerNumber.instance.listObject.RemoveAt(i);
-                        managerGame.temp1 = x;
-                        managerGame.temp2 = y;
-                        managerGame.GetElementsInColumn(x);
-                        managerGame.CheckPosDestroy(x, temp);
-                        managerGame.CheckAferDestroy(managerGame.ListTemp, player) ;
+                        Destroy(managerNumber.list[i]);
+                        managerNumber.list.RemoveAt(i);
+                        Destroy(managerNumber.listObject[i]);
+                        managerNumber.listObject.RemoveAt(i);
+                        managerNumber.temp1 = x;
+                        managerNumber.temp2 = y;
+                        managerNumber.GetElementsInColumn(x);
+                        managerNumber.CheckPosDestroy(x, temp);
+                        managerNumber.CheckAferDestroy(managerNumber.ListTemp, player) ;
                         checkDestroy = true;
                         break;
                     }

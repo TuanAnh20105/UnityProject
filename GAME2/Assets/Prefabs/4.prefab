@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5414201654963197674}
   - component: {fileID: 4555678389371338919}
   - component: {fileID: 6833361581899074078}
+  - component: {fileID: -8474671840974474239}
   m_Layer: 0
   m_Name: 4
   m_TagString: Number
@@ -148,3 +149,22 @@ MonoBehaviour:
   ma: 0
   check: 0
   checkDelete: 0
+  find: 0
+--- !u!114 &-8474671840974474239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 959022340265418921}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2e8e63b1b3dae4b93ce32134f747d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteRender: {fileID: 0}
+  id: 0
+  ma: 0
+  check: 0
+  checkDelete: 0
+  find: 0

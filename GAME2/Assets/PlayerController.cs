@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,8 +18,8 @@ public class PlayerController : MonoBehaviour
     public SwapNumber swap;
     public CanvasController canvas;
     public ManagerNumber managerNumber;
-    public ManagerGame managerGame;
-
+    public bool check = true;
+    public static event Action<bool> findNumber;
     public void SetState( State state)
     {
         this.state = state;
@@ -29,7 +30,10 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        HandleRequest();
+        if(check == true)
+        {
+            HandleRequest();
+        }
     }
     public void HandleRequest()
     {
@@ -67,9 +71,8 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.handleNumber:
-                handleMix.HandleMix(ManagerNumber.instance.number,this);              
-                Debug.Log("handle");
-                if (ManagerNumber.instance.number.find == false)
+                handleMix.HandleMix(ManagerNumber.instance.number,this);
+                if (ManagerNumber.instance.find == false)
                 {
                     handlePush.spawnNumber = true;
                     SetState(State.spawnNumber);
@@ -77,7 +80,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.destroy:
-                destroy.DestoyNumber(this, managerGame);
+                destroy.DestoyNumber(this, managerNumber);
                 if (destroy.checkDestroy == true)
                 {
                     SetState(State.touch);
@@ -86,7 +89,7 @@ public class PlayerController : MonoBehaviour
                 break; 
 
             case State.swap:
-                swap.Swap(this , managerGame);
+                swap.Swap(this , managerNumber);
                 if (swap.checkSwap == true)
                 {
                     SetState(State.touch);

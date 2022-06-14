@@ -8,7 +8,7 @@ public class HandleMixNumber
     {
         if (ManagerNumber.instance.list.Count > 1)
         {
-            number.Check(ManagerNumber.instance.number,player);
+            ManagerNumber.instance.Check(number,player);
         }
         else
         {

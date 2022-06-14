@@ -361,14 +361,6 @@ MonoBehaviour:
   a: 0
   checkForce: 0
   check: 0
-  temp1: 0
-  temp2: 0
-  listSwap: []
-  listNumsInCol: []
-  ListTemp: []
-  listNumberMix: []
-  listCulumnMix: 
-  temp: {fileID: 0}
 --- !u!4 &222469052
 Transform:
   m_ObjectHideFlags: 0
@@ -800,7 +792,7 @@ MonoBehaviour:
   swap: {fileID: 1778581631}
   canvas: {fileID: 1028797711}
   managerNumber: {fileID: 1951516048}
-  managerGame: {fileID: 222469051}
+  check: 1
 --- !u!4 &990539850
 Transform:
   m_ObjectHideFlags: 0
@@ -1651,7 +1643,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51dfeb6e8954a634a9c2a30ce43620aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
   listNumber:
   - {fileID: 12265514154401921, guid: e7b3385c097017a438f57758f89d1132, type: 3}
   - {fileID: 959022340265418921, guid: c58c47e5fe6ab324f9327013c9632853, type: 3}
@@ -1661,10 +1652,6 @@ MonoBehaviour:
   - {fileID: 6062372823779787844, guid: 75ff867d5ba572d49a47ba23fd0762ad, type: 3}
   - {fileID: 5157541474878180713, guid: 5af57ccb1167e884f9869cff0a94407c, type: 3}
   listObject: []
-  list: []
-  temp: {fileID: 50136393}
-  number: {fileID: 0}
-  obj: {fileID: 0}
   listSprite:
   - {fileID: 21300000, guid: 8f5ce69351ca16047ac573f1a0d73599, type: 3}
   - {fileID: 21300000, guid: eb97e5e0b2533fb41b6d739ea7aadd94, type: 3}
@@ -1673,6 +1660,18 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3168515e1cb80ca4e86343ca760a00b8, type: 3}
   - {fileID: 21300000, guid: fc115f72186221a4fb33e47f67d793c6, type: 3}
   - {fileID: 21300000, guid: da755bd67a6a4fa4eab50941b0eddb2e, type: 3}
+  list: []
+  spawnPos: {fileID: 50136393}
+  number: {fileID: 0}
+  obj: {fileID: 0}
+  find: 0
+  temp1: 0
+  temp2: 0
+  listSwap: []
+  listNumsInCol: []
+  ListTemp: []
+  temp: {fileID: 0}
+  listIndex: 
 --- !u!4 &1951516049
 Transform:
   m_ObjectHideFlags: 0
