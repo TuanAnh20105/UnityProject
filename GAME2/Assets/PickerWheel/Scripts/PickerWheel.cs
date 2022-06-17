@@ -50,8 +50,8 @@ namespace EasyUI.PickerWheelUI {
       private int piecesMax = 12 ;
 
       private float pieceAngle ;
-      private float halfPieceAngle ;
-      private float halfPieceAngleWithPaddings ;
+      public float halfPieceAngle ;
+      public float halfPieceAngleWithPaddings ;
 
 
       private double accumulatedWeight ;
@@ -62,7 +62,7 @@ namespace EasyUI.PickerWheelUI {
       private void Start () {
          pieceAngle = 360 / wheelPieces.Length ;
          halfPieceAngle = pieceAngle / 2f ;
-         halfPieceAngleWithPaddings = halfPieceAngle - (halfPieceAngle / 4f) ;
+         halfPieceAngleWithPaddings = halfPieceAngle - (halfPieceAngle / 4f);
 
          Generate () ;  
 
@@ -84,7 +84,7 @@ namespace EasyUI.PickerWheelUI {
       private void Generate () {
          wheelPiecePrefab = InstantiatePiece () ;
 
-         RectTransform rt = wheelPiecePrefab.transform.GetChild (0).GetComponent <RectTransform> () ;
+         RectTransform rt = wheelPiecePrefab.transform.GetChild (0).GetComponent <RectTransform>() ;
          float pieceWidth = Mathf.Lerp (pieceMinSize.x, pieceMaxSize.x, 1f - Mathf.InverseLerp (piecesMin, piecesMax, wheelPieces.Length)) ;
          float pieceHeight = Mathf.Lerp (pieceMinSize.y, pieceMaxSize.y, 1f - Mathf.InverseLerp (piecesMin, piecesMax, wheelPieces.Length)) ;
          rt.SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, pieceWidth) ;
@@ -210,11 +210,8 @@ namespace EasyUI.PickerWheelUI {
                nonZeroChancesIndices.Add (i) ;
          }
       }
-
-
-
-
-      private void OnValidate () {
+      private void OnValidate () 
+      {
          if (PickerWheelTransform != null)
             PickerWheelTransform.localScale = new Vector3 (wheelSize, wheelSize, 1f) ;
 

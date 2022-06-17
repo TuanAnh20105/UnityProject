@@ -97,7 +97,8 @@ public class PlayerController : MonoBehaviour
                 break; 
 
             case State.swap:
-                swap.Swap(this , managerNumber);
+                //swap.Swap(this , managerNumber);
+                if (swap.checkSwap == true)
                 if (swap.checkSwap == true)
                 {
                     SetState(State.touch);
@@ -108,10 +109,7 @@ public class PlayerController : MonoBehaviour
     }
     public void None()
     {
-        //CanvasController.instance.btnStartGame.SetActive(true);
-        //CanvasController.instance.btnDestroy.SetActive(false);
-        //CanvasController.instance.btnSwap.SetActive(false);
-        //CanvasController.instance.btnMenu.SetActive(false);
+
     }
     public void StartGame()
     {

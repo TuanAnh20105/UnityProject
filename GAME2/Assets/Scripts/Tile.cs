@@ -6,7 +6,6 @@ public class Tile : MonoBehaviour
 {
     [SerializeField] private Color baseColor, offsetColor;
     public int id;
-    public GameObject hightLight;
     public SpriteRenderer _renderer;
     public PlayerController player;
     private void Start()
@@ -16,15 +15,6 @@ public class Tile : MonoBehaviour
     public void Init(bool isOffset)
     {
         _renderer.color = isOffset ? offsetColor : baseColor;
-    }
-    private void OnMouseEnter()
-    {
-        hightLight.SetActive(true);
-
-    }
-    private void OnMouseExit()
-    {
-        hightLight.SetActive(false);
     }
     private void OnMouseDown()
     {
