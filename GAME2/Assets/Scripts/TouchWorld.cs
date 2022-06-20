@@ -10,18 +10,15 @@ public class TouchWorld
     public int x = 0;
     public int temp1;
     public Collider2D Touch()
-    {
-        
-            if (Input.GetMouseButtonDown(0))
-            {
-                var touchWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                touchWorld.z = 0;
-                hitInformation = Physics2D.Raycast(touchWorld, Camera.main.transform.forward);
-                if (hitInformation.collider != null)
-                {
-                    x = a / GridManager.instance.hight;
-                }
-            }
+    {             
+        var touchWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        touchWorld.z = 0;
+        hitInformation = Physics2D.Raycast(touchWorld, Camera.main.transform.forward);
+        if (hitInformation.collider != null)
+        {
+            x = a / GridManager.instance.hight;
+        }
+        Debug.Log(hitInformation.collider);
         return hitInformation.collider;
     }
 }

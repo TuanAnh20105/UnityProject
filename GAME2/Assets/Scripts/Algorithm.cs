@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Algorithm 
 {
-    public int block = 11;
+    public int block = 10;
     public int lastRan = 6;
     public int firstRan = 1;
     public void AlgorithmNumber(ManagerNumber managerNumber)
@@ -32,7 +32,7 @@ public class Algorithm
         {
             if(managerNumber.list[i].id == idBlock)
             {
-                managerNumber.list[i].SetColorNumber(managerNumber.listColor[managerNumber.list[i].id]);
+                managerNumber.list[i].SetSpriteNumber(managerNumber.listSprite[managerNumber.list[i].id]);
                 managerNumber.list[i].id += 1;
                 managerNumber.list[i].SetTxtNumber(Mathf.Pow(2, managerNumber.list[i].id).ToString());
                 managerNumber.list[i].transform.name = Mathf.Pow(2, managerNumber.list[i].id).ToString();

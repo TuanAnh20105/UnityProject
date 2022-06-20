@@ -7,7 +7,7 @@ public class ManagerNumber : MonoBehaviour
 {
     //public List<GameObject> listNumber;
     public List<GameObject> listObject;
-    public List<Color> listColor = new List<Color>();
+    public List<Sprite> listSprite = new List<Sprite>();
     public List<Number> list;
     public List<Number> listSwap = new List<Number>();
     public List<Number> listNumsInCol = new List<Number>();
@@ -57,12 +57,12 @@ public class ManagerNumber : MonoBehaviour
         obj = Instantiate(numberSample, spawnPos.transform.position, spawnPos.transform.rotation);
         number = obj.GetComponent<Number>();
         number.SetTxtNumber(Mathf.Pow(2, ran).ToString());
-        number.SetColorNumber(listColor[ran]);
+        number.SetSpriteNumber(listSprite[ran-1]);
         number.transform.position = obj.transform.position;
         number.transform.name = Mathf.Pow(2, ran).ToString();
         number.ma = t;
         numberSamp.text = number.txtNumber.text.ToString();
-        imageSpawn.color = number.color;
+        imageSpawn.sprite = number.sprite;
         t++;
         listObject.Add(obj);
         list.Add(number);
@@ -78,7 +78,7 @@ public class ManagerNumber : MonoBehaviour
         if (listIndex.Count > 0)
         {
             UpdateNode(number);
-            DeleteAllNodeMix();
+            DeleteAllNodeMix(number);
             UpdateListNumber();
         }
         else
@@ -129,8 +129,7 @@ public class ManagerNumber : MonoBehaviour
             for(int j = 0; j < listNumsInCol.Count;j++)
             {
                 UpdateNodeInColumn(listColumn[i], listRow[i]);
-            }
-            
+            }    
         }
         listIndex.Clear();
         listColumn.Clear();
@@ -145,32 +144,33 @@ public class ManagerNumber : MonoBehaviour
             ListTemp.Clear();
         }
     }
-    public void DeleteAllNodeMix()
+    public void DeleteAllNodeMix(Number number)
     {        
         for(int i = 0; i < listIndex.Count; i ++)
         {
+            //number.CheckDirectEffect(list[listIndex[i]]);
             list.RemoveAt(listIndex[i]);
             Destroy(listObject[listIndex[i]]);
             listObject.RemoveAt(listIndex[i]);
-        }           
+        }
     }
     public void UpdateNode(Number number)
     {
         if (CheckUpdateNode1 == true)
         {
             int count = listIndex.Count;
+            
             number.id += count;
             if(idTemp < number.id)
             {
                 idTemp = number.id;
             }
-            number.SetColorNumber(listColor[count + number.id - 1]);
+            number.SetSpriteNumber(listSprite[count + number.id - 2]);
             number.transform.name = Mathf.Pow(2, number.id).ToString();
             number.SetTxtNumber(Mathf.Pow(2, number.id).ToString());
             CheckUpdateNode1 = false;
             CanvasController.instance.SetScore(Mathf.Pow(2, number.id));
         }
-
     }
     public void UpdateNodeInColumn(int column, int row1)
     {
@@ -235,7 +235,7 @@ public class ManagerNumber : MonoBehaviour
     {
         for (int i = 0; i < list.Count; i++)
         {
-            player.handlePush.CheckColoume(list[i], player); ;
+            player.handlePush.CheckColoume(list[i], player); 
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,8 @@ public class PlayerController : MonoBehaviour
     public SwapNumber swap;
     public CanvasController canvas;
     public ManagerNumber managerNumber;
-    public bool check = true;
+    public bool check = true,checkPushNumber = true;
+    public GameObject a;
     public void SetState( State state)
     {
         this.state = state;
@@ -48,7 +50,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.startGame:
-                startGame.GameStart(canvas);
+                startGame.GameStart();
                 SetState(State.spawnNumber);
                 break;
 
@@ -56,11 +58,10 @@ public class PlayerController : MonoBehaviour
                 handlePush.SpawnNumber(managerNumber);
                 SetState(State.touch);
                 break;  
-
             case State.touch:
-                touch.Touch();
                 if(Input.GetMouseButtonDown(0))
                 {
+                    touch.Touch();
                     if(touch.hitInformation.collider != null)
                     {                        
                         SetState(State.pushNumber);                        
@@ -69,12 +70,10 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.pushNumber:
-                handlePush.HandlePush(touch,this);
-                //if(handlePush.checkPush == true)
+                if(checkPushNumber == true)
                 {
-                    SetState(State.handleNumber);
-                    handlePush.checkPush = false;
-                }
+                    handlePush.HandlePush(touch,this);
+                }              
                 break;
 
             case State.handleNumber:
@@ -82,7 +81,6 @@ public class PlayerController : MonoBehaviour
                 if (ManagerNumber.instance.find == false)
                 {
                     handlePush.spawnNumber = true;
-                    managerNumber.ListTemp.Clear();
                     SetState(State.spawnNumber);
                 }
                 break;
@@ -97,7 +95,6 @@ public class PlayerController : MonoBehaviour
                 break; 
 
             case State.swap:
-                //swap.Swap(this , managerNumber);
                 if (swap.checkSwap == true)
                 if (swap.checkSwap == true)
                 {
@@ -111,6 +108,7 @@ public class PlayerController : MonoBehaviour
     {
 
     }
+
     public void StartGame()
     {
         handlePush.spawnNumber = true;

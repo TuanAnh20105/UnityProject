@@ -13,7 +13,7 @@ public class DestroyNumber : MonoBehaviour
             {          
                 for (int i = 0; i < managerNumber.list.Count; i++)
                 {
-                    if (Vector2.Distance(managerNumber.list[i].transform.position, player.touch.hitInformation.transform.position) < 1f)
+                    if (Vector2.Distance(managerNumber.list[i].transform.position, player.touch.hitInformation.transform.position) < 0.5f)
                     {
                         Number temp = managerNumber.list[i];
                         int x = (int)managerNumber.list[i].transform.position.x;

@@ -881,7 +881,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 50136393}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: -6, z: 0}
+  m_LocalPosition: {x: -0.34, y: -4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -10910,6 +10910,8 @@ MonoBehaviour:
   canvas: {fileID: 1028797711}
   managerNumber: {fileID: 1951516048}
   check: 1
+  checkPushNumber: 1
+  a: {fileID: 0}
 --- !u!4 &990539850
 Transform:
   m_ObjectHideFlags: 0
@@ -20517,27 +20519,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listObject: []
-  listColor:
-  - {r: 1, g: 0.7216981, b: 0.7216981, a: 1}
-  - {r: 0.6886792, g: 0.41255784, b: 0.41255784, a: 1}
-  - {r: 0.735849, g: 0.31585974, b: 0.31585974, a: 1}
-  - {r: 0.5849056, g: 0.19037023, b: 0.19037023, a: 1}
-  - {r: 0.8018868, g: 0.6543699, b: 0.6543699, a: 1}
-  - {r: 0.7735849, g: 0.5947846, b: 0.5947846, a: 1}
-  - {r: 0.990566, g: 0.4438857, b: 0.4438857, a: 1}
-  - {r: 0.5660378, g: 0.120149545, b: 0.120149545, a: 1}
-  - {r: 0.990566, g: 0.6961997, b: 0.6961997, a: 1}
-  - {r: 0.9056604, g: 0.55108577, b: 0.55108577, a: 1}
-  - {r: 0.9150943, g: 0.5222944, b: 0.6734251, a: 1}
-  - {r: 1, g: 0.41037738, b: 0.6475684, a: 1}
-  - {r: 1, g: 0.3443396, b: 0.6670387, a: 1}
-  - {r: 1, g: 0.4009434, b: 0.8270286, a: 1}
-  - {r: 0.9433962, g: 0.20024922, b: 0.7798562, a: 1}
-  - {r: 0.9630041, g: 0.3537736, b: 1, a: 1}
-  - {r: 0.83341795, g: 0.40792987, b: 0.9716981, a: 1}
-  - {r: 0.68060654, g: 0.4251958, b: 0.990566, a: 1}
-  - {r: 0.4669811, g: 0.47995183, b: 1, a: 1}
-  - {r: 0.4009434, g: 0.6347699, b: 1, a: 1}
+  listSprite:
+  - {fileID: 21300000, guid: b2102de73e709dd4782731693397210f, type: 3}
+  - {fileID: 21300000, guid: 359ac38a536b6594d8dcd8a8d316365e, type: 3}
+  - {fileID: 21300000, guid: 2cf8f19e47e9b634d904d7fd786d6ddb, type: 3}
+  - {fileID: 21300000, guid: 79d3458e4ee7fcd4f82ee84e344037ee, type: 3}
+  - {fileID: 21300000, guid: 5f2ae5474573c014eb32d4dea28d4b46, type: 3}
+  - {fileID: 21300000, guid: 70fdf2b6837720041929814f2ed56c2c, type: 3}
+  - {fileID: 21300000, guid: 359ac38a536b6594d8dcd8a8d316365e, type: 3}
+  - {fileID: 21300000, guid: 2cf8f19e47e9b634d904d7fd786d6ddb, type: 3}
+  - {fileID: 21300000, guid: 79d3458e4ee7fcd4f82ee84e344037ee, type: 3}
+  - {fileID: 21300000, guid: 5f2ae5474573c014eb32d4dea28d4b46, type: 3}
+  - {fileID: 21300000, guid: 70fdf2b6837720041929814f2ed56c2c, type: 3}
+  - {fileID: 21300000, guid: b2102de73e709dd4782731693397210f, type: 3}
+  - {fileID: 21300000, guid: 359ac38a536b6594d8dcd8a8d316365e, type: 3}
+  - {fileID: 21300000, guid: 2cf8f19e47e9b634d904d7fd786d6ddb, type: 3}
+  - {fileID: 21300000, guid: 79d3458e4ee7fcd4f82ee84e344037ee, type: 3}
+  - {fileID: 21300000, guid: 5f2ae5474573c014eb32d4dea28d4b46, type: 3}
+  - {fileID: 21300000, guid: b2102de73e709dd4782731693397210f, type: 3}
   list: []
   listSwap: []
   listNumsInCol: []
