@@ -24,7 +24,7 @@ public class HandlePushNumber
             if (touch.x == i)
             {
 
-                ManagerNumber.instance.number.transform.position = new Vector2(i, 0);
+                ManagerNumber.instance.number.transform.position = new Vector2(i, -1);
                 touch.temp1 = i;
                 CheckColoume(ManagerNumber.instance.number, player);
                 return;
@@ -35,7 +35,7 @@ public class HandlePushNumber
     {
         for (int i = GridManager.instance.hight - 1; i >= 0; i--)
         {
-            if (GridManager.instance.matrix[player.touch.temp1, i] == 0)
+            if (GridManager.instance.matrix[player.touch.temp1, i] == 0 )
             {
                 temp = new Vector2(player.touch.temp1, i);
                 GridManager.instance.matrix[player.touch.temp1, (int)temp.y] = 1;
@@ -44,11 +44,8 @@ public class HandlePushNumber
                     Debug.Log(temp.ToString());
                     player.SetState(PlayerController.State.handleNumber);
                     player.checkPushNumber = true;
-
                 });
-                Debug.Log(temp.ToString());
-                player.checkPushNumber = false;
-                
+                player.checkPushNumber = false;                
                 break;
             }
         }

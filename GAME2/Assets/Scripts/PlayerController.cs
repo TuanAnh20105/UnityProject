@@ -94,8 +94,9 @@ public class PlayerController : MonoBehaviour
                 }
                 break; 
 
+
             case State.swap:
-                if (swap.checkSwap == true)
+                swap.Swap(this,managerNumber);
                 if (swap.checkSwap == true)
                 {
                     SetState(State.touch);
@@ -119,7 +120,7 @@ public class PlayerController : MonoBehaviour
         SetState(State.destroy);
     }
     public void Swap()
-    {      
+    {
         SetState(State.swap);
     }
     public void Block()

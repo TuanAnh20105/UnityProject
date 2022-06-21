@@ -165,7 +165,7 @@ public class ManagerNumber : MonoBehaviour
             {
                 idTemp = number.id;
             }
-            number.SetSpriteNumber(listSprite[count + number.id - 2]);
+            number.SetSpriteNumber(listSprite[ number.id - 1]);
             number.transform.name = Mathf.Pow(2, number.id).ToString();
             number.SetTxtNumber(Mathf.Pow(2, number.id).ToString());
             CheckUpdateNode1 = false;
@@ -209,6 +209,7 @@ public class ManagerNumber : MonoBehaviour
     }
     public void CheckPosDestroy(int column, Number number)
     {
+        Debug.Log(number.transform.name);
         ListTemp.Clear();
         while (listNumsInCol.Count != 0)
         {
@@ -235,7 +236,7 @@ public class ManagerNumber : MonoBehaviour
     {
         for (int i = 0; i < list.Count; i++)
         {
-            player.handlePush.CheckColoume(list[i], player); 
+            CheckNumber(list[i]);
         }
     }
 }
