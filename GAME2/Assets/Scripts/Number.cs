@@ -16,10 +16,12 @@ public class Number : MonoBehaviour
     public GameObject EffectLeft;
     public GameObject EffectButtom;
     public GameObject EffectTop;
+    public Transform trans;
 
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        trans = gameObject.transform;
     }
     public void SetTxtNumber(string txt)
     {

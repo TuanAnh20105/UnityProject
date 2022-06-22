@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour
         {
             HandleRequest();
         }
-        Debug.Log(state.ToString());
     }
     public void HandleRequest()
     {
@@ -77,6 +76,8 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.handleNumber:
+                managerNumber.listSpawn.Clear();
+                
                 handleMix.HandleMix(ManagerNumber.instance.number,this);
                 if (ManagerNumber.instance.find == false)
                 {

@@ -18,7 +18,6 @@ public class TouchWorld
         {
             x = a / GridManager.instance.hight;
         }
-        Debug.Log(hitInformation.collider);
         return hitInformation.collider;
     }
 }

@@ -41,7 +41,6 @@ public class HandlePushNumber
                 GridManager.instance.matrix[player.touch.temp1, (int)temp.y] = 1;
                 number.transform.DOMove(temp, 0.2f).SetEase(Ease.Flash).OnComplete(()=>
                 {
-                    Debug.Log(temp.ToString());
                     player.SetState(PlayerController.State.handleNumber);
                     player.checkPushNumber = true;
                 });

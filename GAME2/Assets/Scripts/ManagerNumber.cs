@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,13 +34,14 @@ public class ManagerNumber : MonoBehaviour
     public Image imageSpawn;
     Algorithm algorithm = new Algorithm();
     public int idTemp = 0;
-    
+    public int countMerge = 0;
+
 
     private void Awake()
     {
         instance = this;
     }
-    public Number GetNumberWithPos(int x , int y )
+    public Number GetNumberWithPos(int x , int y)
     {
         Vector3 temp = new Vector3(x, y,0);
         for(int i = 0; i < list.Count;i++)
@@ -53,7 +55,9 @@ public class ManagerNumber : MonoBehaviour
     }
     public void Spawn()
     {
+        
         algorithm.AlgorithmNumber(this);
+        Debug.Log(ran);
         obj = Instantiate(numberSample, spawnPos.transform.position, spawnPos.transform.rotation);
         number = obj.GetComponent<Number>();
         number.SetTxtNumber(Mathf.Pow(2, ran).ToString());
@@ -71,20 +75,28 @@ public class ManagerNumber : MonoBehaviour
         {
             idTemp = ran;
         }
+        algorithm.listNumberVitual.Clear();
     }
-    public void CheckNumber(Number number)
+    public void CheckNumber(Number number )
     {
         CheckNumbersMix(number);
         if (listIndex.Count > 0)
         {
             UpdateNode(number);
-            DeleteAllNodeMix(number);
+            //StartCoroutine(Test(number));
+            DeleteAllNodeMix();
             UpdateListNumber();
+          
         }
         else
         {
             find = false;
         }
+    }
+    IEnumerator Test(Number number)
+    {
+        yield return new WaitForSeconds(1);
+        UpdateNode(number);
     }
     public void CheckNumbersMix(Number number)
     {
@@ -134,6 +146,12 @@ public class ManagerNumber : MonoBehaviour
         listIndex.Clear();
         listColumn.Clear();
         listRow.Clear();
+        Debug.Log(ListTemp.Count);
+     CheckListTemp();
+    }
+    public void CheckListTemp()
+
+    {
         if (ListTemp.Count != 0)
         {
             for (int i = 0; i < ListTemp.Count; i++)
@@ -144,7 +162,7 @@ public class ManagerNumber : MonoBehaviour
             ListTemp.Clear();
         }
     }
-    public void DeleteAllNodeMix(Number number)
+    public void DeleteAllNodeMix()
     {        
         for(int i = 0; i < listIndex.Count; i ++)
         {
@@ -156,6 +174,7 @@ public class ManagerNumber : MonoBehaviour
     }
     public void UpdateNode(Number number)
     {
+        countMerge += listIndex.Count;
         if (CheckUpdateNode1 == true)
         {
             int count = listIndex.Count;
@@ -184,10 +203,14 @@ public class ManagerNumber : MonoBehaviour
                     int column1 = (int)listNumsInCol[0].transform.position.y;
                     if (column1 <= row1)
                     {
-                        listNumsInCol[0].transform.position = new Vector2(column, i);
+                        ListTemp.Add(listNumsInCol[0]);
                         GridManager.instance.matrix[row, column1] = 0;
                         GridManager.instance.matrix[column, i] = 1;
-                        ListTemp.Add(listNumsInCol[0]);
+                        //listNumsInCol[0].transform.DOMove(new Vector2(column, i), 0.2f).SetEase(Ease.Flash).OnComplete(() =>
+                        //{
+                            
+                        //});
+                        listNumsInCol[0].transform.position = new Vector2(column, i);
                     }
                     listNumsInCol.RemoveAt(0);
                     break;
@@ -231,6 +254,18 @@ public class ManagerNumber : MonoBehaviour
                 }
             }
         }
+    }
+    public int GetIndexInList(int x , int y, List<Number> list)
+    {
+        for(int i = 0; i < list.Count;i++)
+        {
+            Vector3 a = new Vector3(x, y,0);
+            if (list[i].transform.position == a)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
     public void CheckAferDestroy(List<Number> list, PlayerController player)
     {
