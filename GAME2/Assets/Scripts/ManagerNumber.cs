@@ -1,8 +1,10 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class ManagerNumber : MonoBehaviour
 {
@@ -19,7 +21,7 @@ public class ManagerNumber : MonoBehaviour
     public List<int> listSpawn = new List<int>();
     public List<Number> listDestroy = new List<Number>();
     bool checkAdd = true;
-    public Number temp = new Number();
+    public Number temp;
     public GameObject spawnPos;
     public GameObject numberSample;
     public GameObject obj;
@@ -32,10 +34,22 @@ public class ManagerNumber : MonoBehaviour
     public int temp1, temp2;
     public int ran;
     public Image imageSpawn;
-    Algorithm algorithm = new Algorithm();
+   public Algorithm algorithm;
     public int idTemp = 0;
-    public int countMerge = 0;
-
+    [TextArea(5,7)]
+    public string test= "";
+    public void PrintfTest()
+    {
+        test = "";
+        for (int i = 0; i < GridManager.instance.hight; i++)
+        {
+            for (int j = 0; j < GridManager.instance.width; j++)
+            {
+                test += " "+ GridManager.instance.matrix[i, j];
+            }
+            test += "\n";
+        }
+    }
 
     private void Awake()
     {
@@ -53,11 +67,19 @@ public class ManagerNumber : MonoBehaviour
         }
         return null;
     }
+    // ReSharper disable Unity.PerformanceAnalysis
     public void Spawn()
     {
-        
-        algorithm.AlgorithmNumber(this);
-        Debug.Log(ran);
+       
+        if (list.Count > 3)
+        {
+            algorithm.Handle();
+        }
+        else
+        {
+            algorithm.AlgorithmNumber(this);
+            //ran = Random.Range(1, 5);
+        }
         obj = Instantiate(numberSample, spawnPos.transform.position, spawnPos.transform.rotation);
         number = obj.GetComponent<Number>();
         number.SetTxtNumber(Mathf.Pow(2, ran).ToString());
@@ -75,8 +97,9 @@ public class ManagerNumber : MonoBehaviour
         {
             idTemp = ran;
         }
-        algorithm.listNumberVitual.Clear();
+       
     }
+    // ReSharper disable Unity.PerformanceAnalysis
     public void CheckNumber(Number number )
     {
         CheckNumbersMix(number);
@@ -146,8 +169,7 @@ public class ManagerNumber : MonoBehaviour
         listIndex.Clear();
         listColumn.Clear();
         listRow.Clear();
-        Debug.Log(ListTemp.Count);
-     CheckListTemp();
+        CheckListTemp();
     }
     public void CheckListTemp()
 
@@ -174,7 +196,7 @@ public class ManagerNumber : MonoBehaviour
     }
     public void UpdateNode(Number number)
     {
-        countMerge += listIndex.Count;
+        
         if (CheckUpdateNode1 == true)
         {
             int count = listIndex.Count;

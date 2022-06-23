@@ -2,39 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Algorithm :MonoBehaviour
+public class Algorithm : MonoBehaviour
 {
     public int block = 10;
     public int lastRan = 6;
     public int firstRan = 1;
-    public List<int> listNumberInMatrix = new List<int>();
+
+    //public List<int> listNumberInMatrix = new List<int>();
     public int[,] matrixVitual = new int[200, 200];
     public  List<Number> listNumberVitual = new List<Number>();
-    HandlePushNumber handlePush = new HandlePushNumber();
     public List<int> listNumberLastInCol = new List<int>();
-    int min = 0;
-    public List<Number> listNumberSpawn = new List<Number>();
     List<int> listIndex = new List<int>();
-    public List<Number> list;
-    public List<Number> listSwap = new List<Number>();
     public List<Number> listNumsInCol = new List<Number>();
     public List<Number> ListTemp = new List<Number>();
-
-
-
+    public Number number = new Number();
     List<int> listColumn = new List<int>();
     List<int> listRow = new List<int>();
     bool checkAdd = true;
-    public Number temp = new Number();
-    public bool find = false;
-    int t = 0;
     bool CheckUpdateNode1 = false;
-    public static ManagerNumber instance;
     public int temp1, temp2;
-    public int ran;
-    public int idTemp = 0;
     public int countMerge = 0;
-    public void CreateMatrixVitual()
+    int max = 0;
+    public List<int> listCountMerge = new List<int>();
+    private void CreateMatrixVitual()
     {
         for(int i = 0; i < GridManager.instance.width;i++)
         {
@@ -43,36 +33,78 @@ public class Algorithm :MonoBehaviour
                 matrixVitual[i, j] = GridManager.instance.matrix[i, j];
             }
         }
+        listNumberVitual.Clear();
         for( int n = 0; n < ManagerNumber.instance.list.Count;n++)
         {
             listNumberVitual.Add(ManagerNumber.instance.list[n]);
         }
     }
-    public void Handle(ManagerNumber managerNumber, PlayerController player)
+    public void Handle()
     {
-        if(managerNumber.list.Count > 1)
-        {
-            CreateMatrixVitual();
-            GetElementLastInCol(managerNumber);
-        }
-
-        for (int i = 0; i < listNumberLastInCol.Count; i++)
-        {
-            listNumberVitual[listNumberLastInCol[i]].id += 1;
-            listNumberVitual[listNumberLastInCol[i]].ma += 1;
-        }
-
+        CreateMatrixVitual();
+        GetElementLastInCol();
+        SpawnNumberLastColumn();
     }
-    public void checkNumber(Number number)
+    private void SpawnNumberLastColumn()
     {
-        for(int i = 0; i< listNumberVitual.Count;i++)
-        {
-            if(Vector2.Distance(number.transform.position, listNumberVitual[i].transform.position) <= 1.1f
-                && number.id == listNumberVitual[i].id && listNumberVitual.Count > 1 && number.ma != listNumberVitual[i].ma)
+        for(int j = 0; j < listNumberLastInCol.Count;j++)
+        {           
+            for (int i = 0; i < GridManager.instance.width; i++)
             {
-                listIndex.Add(i);
+                Vector2 temp = GetPosLastNumberInCol(i);
+                number.transform.position = new Vector3(i, temp.y-1,0);
+                number.id = listNumberVitual[listNumberLastInCol[j]].id;
+                number.ma += 100;
+                matrixVitual[i,(int)temp.y - 1] = 1;
+                listNumberVitual.Add(number);
+                CheckNumber(number);
+                ListTemp.Clear();
+                if (max <= countMerge)
+                {
+                    max = countMerge;
+                }
+                CreateMatrixVitual();
+                countMerge = 0;
+            }
+            listCountMerge.Add(max);
+            max = 0;
+        }
+        CheckNumberWillSpawn();
+        listCountMerge.Clear();
+    }
+    private void CheckNumberWillSpawn()
+    {
+        int temp = 0;
+        int max = listCountMerge[0];
+       
+        for (int i = 0 ; i < listCountMerge.Count; i++)
+        {
+            if(max <= listCountMerge[i])
+            {
+                max = listCountMerge[i];
+                temp = i;
             }
         }
+        Debug.Log("this max " + max);
+        Debug.Log("this listCountMerge " + listCountMerge.Count);
+        Debug.Log("this temp" + temp);
+        ManagerNumber.instance.ran = listNumberVitual[listNumberLastInCol[temp]].id;
+        if (ManagerNumber.instance.ran > lastRan)
+        {
+            ManagerNumber.instance.ran = Random.Range(firstRan, lastRan);
+        }
+        Debug.Log("This ran " + ManagerNumber.instance.ran);
+    }
+    private Vector2 GetPosLastNumberInCol( int  column)
+    {
+        for (int y = 0; y < GridManager.instance.hight; y++)
+        {
+            if (matrixVitual[column, y] == 1)
+            {
+                return new Vector2(column, y);
+            }
+        }
+        return new Vector2(column,GridManager.instance.hight);
     }
     public void AlgorithmNumber(ManagerNumber managerNumber)
     {
@@ -89,7 +121,6 @@ public class Algorithm :MonoBehaviour
         {
             managerNumber.ran = Random.Range(firstRan, lastRan);
         }
-        //CheckNumberInMatrix(managerNumber);
         int partGrid = GridManager.instance.hight * GridManager.instance.width / 2;
         if (managerNumber.list.Count <=1)
         {
@@ -102,7 +133,7 @@ public class Algorithm :MonoBehaviour
             return;
         }
     }
-    public void UpdateNumberBlock(ManagerNumber managerNumber, int idBlock )
+    private void UpdateNumberBlock(ManagerNumber managerNumber, int idBlock )
     {
         for(int i = 0; i < managerNumber.list.Count;i++)
         {
@@ -117,56 +148,43 @@ public class Algorithm :MonoBehaviour
         }
     }
 
-    public void GetElementLastInCol(ManagerNumber managerNumber)
+    private void GetElementLastInCol()
     {
+        listNumberLastInCol.Clear();
         for (int x = 0; x < GridManager.instance.width; x++)
         {
             for (int y = 0; y < GridManager.instance.hight; y++)
             {
                 if ( matrixVitual[x,y] == 1)
                 {
-                    listNumberLastInCol.Add (managerNumber.GetIndexInList(x, y, listNumberVitual));
+                    listNumberLastInCol.Add(GetIndexInList(x, y));
                     break;
                 }
             }
         }
-        //managerNumber.listSpawn.Sort();
     }
-    public void CheckNumberInMatrix(ManagerNumber managerNumber)
+    private int GetIndexInList(int x, int y)
     {
-        for (int x = 0; x < GridManager.instance.width; x++)
+        for (int i = 0; i < listNumberVitual.Count; i++)
         {
-            for (int y = 0; y < GridManager.instance.hight; y++)
+            Vector3 a = new Vector3(x, y, 0);
+            if (listNumberVitual[i].transform.position == a)
             {
-                if (GridManager.instance.matrix[x, y] == 1)
-                {
-                    listNumberInMatrix.Add(managerNumber.GetNumberWithPos(x, y).id - 1);
-                }
-
+                return i;
             }
         }
-        listNumberInMatrix.Sort();
+        return -1;
     }
 
-
-
-
-
-
-    public void CheckNumber(Number number, List<Number> list)
+    private void CheckNumber(Number number )
     {
-        CheckNumbersMix(number, list);
+        CheckNumbersMix(number);
         if (listIndex.Count > 0)
         {
             UpdateNode(number);
-            //StartCoroutine(Test(number));
             DeleteAllNodeMix();
             UpdateListNumber();
-
-        }
-        else
-        {
-            find = false;
+            listIndex.Clear();
         }
     }
     IEnumerator Test(Number number)
@@ -174,29 +192,28 @@ public class Algorithm :MonoBehaviour
         yield return new WaitForSeconds(1);
         UpdateNode(number);
     }
-    public void CheckNumbersMix(Number number, List<Number> list)
+    private void CheckNumbersMix(Number number)
     {
-        for (int i = list.Count - 1; i >= 0; i--)
+        for (int i = listNumberVitual.Count - 1; i >= 0; i--)
         {
-            if (Vector2.Distance(number.transform.position, list[i].transform.position) <= 1.1f
-                && number.id == list[i].id && list.Count > 1 && number.ma != list[i].ma)
+            if (Vector2.Distance(number.transform.position, listNumberVitual[i].transform.position) <= 1.1f
+                && number.id == listNumberVitual[i].id && listNumberVitual.Count > 1 && number.ma != listNumberVitual[i].ma)
             {
-                find = true;
                 listIndex.Add(i);
-                UpdateMatrix(number, list[i]);
+                UpdateMatrix(number, listNumberVitual[i]);
                 CheckUpdateNode1 = true;
             }
         }
     }
-    public void UpdateMatrix(Number number, Number list)
+    private void UpdateMatrix(Number number, Number list)
     {
         temp1 = (int)number.transform.position.x;
         temp2 = (int)number.transform.position.y;
 
-        GridManager.instance.matrix[temp1, temp2] = 0;
+        matrixVitual[temp1, temp2] = 0;
         int x = (int)list.transform.position.x;
         int y = (int)list.transform.position.y;
-        GridManager.instance.matrix[x, y] = 0;
+        matrixVitual[x, y] = 0;
         listColumn.Add(x);
         if (temp1 != x)
         {
@@ -209,7 +226,7 @@ public class Algorithm :MonoBehaviour
         }
         listRow.Add(temp2);
     }
-    public void UpdateListNumber()
+    private void UpdateListNumber()
     {
         for (int i = 0; i < listColumn.Count; i++)
         {
@@ -222,48 +239,38 @@ public class Algorithm :MonoBehaviour
         listIndex.Clear();
         listColumn.Clear();
         listRow.Clear();
-        Debug.Log(ListTemp.Count);
         CheckListTemp();
     }
-    public void CheckListTemp()
-
+    private void CheckListTemp()
     {
         if (ListTemp.Count != 0)
         {
             for (int i = 0; i < ListTemp.Count; i++)
             {
                 checkAdd = true;
-                CheckNumber(ListTemp[i], list);
+                CheckNumber(ListTemp[i]);
             }
             ListTemp.Clear();
         }
     }
-    public void DeleteAllNodeMix()
+    private void DeleteAllNodeMix()
     {
         for (int i = 0; i < listIndex.Count; i++)
         {
-            list.RemoveAt(listIndex[i]);
+            listNumberVitual.RemoveAt(listIndex[i]);
         }
     }
-    public void UpdateNode(Number number)
+    private void UpdateNode(Number number)
     {
         countMerge += listIndex.Count;
         if (CheckUpdateNode1 == true)
         {
             int count = listIndex.Count;
-
             number.id += count;
-            if (idTemp < number.id)
-            {
-                idTemp = number.id;
-            }
-            number.transform.name = Mathf.Pow(2, number.id).ToString();
-            number.SetTxtNumber(Mathf.Pow(2, number.id).ToString());
             CheckUpdateNode1 = false;
-            CanvasController.instance.SetScore(Mathf.Pow(2, number.id));
         }
     }
-    public void UpdateNodeInColumn(int column, int row1)
+    private void UpdateNodeInColumn(int column, int row1)
     {
         while (listNumsInCol.Count != 0)
         {
@@ -278,7 +285,7 @@ public class Algorithm :MonoBehaviour
                         ListTemp.Add(listNumsInCol[0]);
                         matrixVitual[row, column1] = 0;
                         matrixVitual[column, i] = 1;
-                        listNumsInCol[0].transform.position = new Vector2(column, i);
+                        listNumsInCol[0].transform.position = new Vector3(column, i,0);
                     }
                     listNumsInCol.RemoveAt(0);
                     break;
@@ -286,14 +293,14 @@ public class Algorithm :MonoBehaviour
             }
         }
     }
-    public void GetElementsInColumn(float x, float y)
+    private void GetElementsInColumn(float x, float y)
     {
         listNumsInCol.Clear();
-        for (int i = 0; i < list.Count; i++)
+        for (int i = 0; i < listNumberVitual.Count; i++)
         {
-            if (list[i].transform.position.x == x && list[i].transform.position.y <= y)
+            if (listNumberVitual[i].transform.position.x == x && listNumberVitual[i].transform.position.y <= y)
             {
-                listNumsInCol.Add(list[i]);
+                listNumsInCol.Add(listNumberVitual[i]);
             }
         }
 
