@@ -152,6 +152,10 @@ public class Algorithm : MonoBehaviour
         {
             ManagerNumber.instance.ran = Random.Range(firstRan, listNumberLastInColClone[temp]+1);
         }
+        if (tileNull < 10 && CanvasController.instance.score < 10000)
+        {
+            ManagerNumber.instance.ran = listNumberLastInColClone[temp];
+        }
         if (ManagerNumber.instance.ran > lastRan)
         {
             ManagerNumber.instance.ran = Random.Range(firstRan, lastRan);

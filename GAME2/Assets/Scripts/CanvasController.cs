@@ -12,7 +12,7 @@ public class CanvasController : MonoBehaviour
     public GameObject btnButtom;
     public static CanvasController instance;
     public Text txtScore;
-    float score = 0;
+    public float score = 0;
     public Text txtTime;
     int time = 3610;
     int a = 0;
