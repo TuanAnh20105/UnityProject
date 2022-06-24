@@ -1014,18 +1014,11 @@ MonoBehaviour:
   block: 10
   lastRan: 6
   firstRan: 1
-  listNumberInMatrix: 
-  listNumberVitual: []
-  listNumberLastInCol: 
-  listNumberSpawn: []
-  listNumsInCol: []
-  ListTemp: []
-  number: {fileID: 5468545614488586721, guid: 909ebcb7ce270e04280044dd78e4be30, type: 3}
-  find: 0
-  temp1: 0
-  temp2: 0
+  listNumberLastInColClone: 
   countMerge: 0
   listCountMerge: 
+  listColumn: 
+  merge: 0
 --- !u!4 &65734787
 Transform:
   m_ObjectHideFlags: 0
@@ -10970,6 +10963,7 @@ MonoBehaviour:
   check: 1
   checkPushNumber: 1
   a: {fileID: 0}
+  algorithm: {fileID: 65734786}
 --- !u!4 &990539850
 Transform:
   m_ObjectHideFlags: 0
@@ -20615,6 +20609,7 @@ MonoBehaviour:
   imageSpawn: {fileID: 1662627149}
   algorithm: {fileID: 65734786}
   idTemp: 0
+  test: 
 --- !u!4 &1951516049
 Transform:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ public class GridManager : MonoBehaviour
     public int hight;
     [SerializeField] private Tile tilePref;
     public List<Vector2> listTiles = new List<Vector2>();
-    public int[,] matrix = new int[200, 200];
+    public int[,] matrix = new int[10, 10];
     [TextArea(10, 20)]
     public string weight;
     public static GridManager Instance;

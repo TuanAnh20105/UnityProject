@@ -34,23 +34,10 @@ public class ManagerNumber : MonoBehaviour
     public int temp1, temp2;
     public int ran;
     public Image imageSpawn;
-   public Algorithm algorithm;
+    public Algorithm algorithm;
     public int idTemp = 0;
     [TextArea(5,7)]
     public string test= "";
-    public void PrintfTest()
-    {
-        test = "";
-        for (int i = 0; i < GridManager.instance.hight; i++)
-        {
-            for (int j = 0; j < GridManager.instance.width; j++)
-            {
-                test += " "+ GridManager.instance.matrix[i, j];
-            }
-            test += "\n";
-        }
-    }
-
     private void Awake()
     {
         instance = this;
@@ -70,15 +57,13 @@ public class ManagerNumber : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     public void Spawn()
     {
-       
-        if (list.Count > 3)
+        if (list.Count > 2)
         {
             algorithm.Handle();
         }
         else
         {
             algorithm.AlgorithmNumber(this);
-            //ran = Random.Range(1, 5);
         }
         obj = Instantiate(numberSample, spawnPos.transform.position, spawnPos.transform.rotation);
         number = obj.GetComponent<Number>();
@@ -97,9 +82,7 @@ public class ManagerNumber : MonoBehaviour
         {
             idTemp = ran;
         }
-       
     }
-    // ReSharper disable Unity.PerformanceAnalysis
     public void CheckNumber(Number number )
     {
         CheckNumbersMix(number);
@@ -109,7 +92,6 @@ public class ManagerNumber : MonoBehaviour
             //StartCoroutine(Test(number));
             DeleteAllNodeMix();
             UpdateListNumber();
-          
         }
         else
         {
@@ -139,7 +121,6 @@ public class ManagerNumber : MonoBehaviour
     {
         temp1 = (int)number.transform.position.x;
         temp2 = (int)number.transform.position.y;
-
         GridManager.instance.matrix[temp1, temp2] = 0;
         int x = (int)list.transform.position.x;
         int y = (int)list.transform.position.y;
@@ -172,7 +153,6 @@ public class ManagerNumber : MonoBehaviour
         CheckListTemp();
     }
     public void CheckListTemp()
-
     {
         if (ListTemp.Count != 0)
         {
@@ -227,7 +207,7 @@ public class ManagerNumber : MonoBehaviour
                     {
                         ListTemp.Add(listNumsInCol[0]);
                         GridManager.instance.matrix[row, column1] = 0;
-                        GridManager.instance.matrix[column, i] = 1;
+                        GridManager.instance.matrix[column, i] = listNumsInCol[0].id;
                         //listNumsInCol[0].transform.DOMove(new Vector2(column, i), 0.2f).SetEase(Ease.Flash).OnComplete(() =>
                         //{
                             
@@ -268,7 +248,7 @@ public class ManagerNumber : MonoBehaviour
                     {
                         listNumsInCol[0].transform.position = new Vector2(column, i);
                         GridManager.instance.matrix[row, column1] = 0;
-                        GridManager.instance.matrix[column, i] = 1;
+                        GridManager.instance.matrix[column, i] = listNumsInCol[0].id;
                         ListTemp.Add(listNumsInCol[0]);
                     }
                     listNumsInCol.RemoveAt(0);
@@ -294,6 +274,21 @@ public class ManagerNumber : MonoBehaviour
         for (int i = 0; i < list.Count; i++)
         {
             CheckNumber(list[i]);
+        }
+    }
+    
+    public void UpdateNumberBlock(int idBlock)
+    {
+        for(int i = 0; i < list.Count;i++)
+        {
+            if(list[i].id == idBlock)
+            {
+                list[i].SetSpriteNumber(listSprite[list[i].id]);
+                list[i].id += 1;
+                list[i].SetTxtNumber(Mathf.Pow(2, list[i].id).ToString());
+                list[i].transform.name = Mathf.Pow(2, list[i].id).ToString();
+                CheckNumber(list[i]);
+            }
         }
     }
 }

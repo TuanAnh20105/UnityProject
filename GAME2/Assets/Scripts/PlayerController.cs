@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public ManagerNumber managerNumber;
     public bool check = true,checkPushNumber = true;
     public GameObject a;
+    public Algorithm algorithm;
     public void SetState( State state)
     {
         this.state = state;

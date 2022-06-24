@@ -38,8 +38,7 @@ public class HandlePushNumber
             if (GridManager.instance.matrix[player.touch.temp1, i] == 0 )
             {
                 temp = new Vector2(player.touch.temp1, i);
-                GridManager.instance.matrix[player.touch.temp1, (int)temp.y] = 1;
-                ManagerNumber.instance.PrintfTest();
+                GridManager.instance.matrix[player.touch.temp1, (int)temp.y] = number.id;
                 number.transform.DOMove(temp, 0.2f).SetEase(Ease.Flash).OnComplete(()=>
                 {
                     player.SetState(PlayerController.State.handleNumber);
