@@ -80,7 +80,7 @@ SpriteRenderer:
   m_Size: {x: 8.2, y: 8.6}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &3100118400956349981
@@ -95,10 +95,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8aeb3338b9e9874583d409774b9289e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseColor: {r: 1, g: 1, b: 1, a: 0}
-  offsetColor: {r: 0.6462264, g: 1, b: 0.8156158, a: 0}
+  baseColor: {r: 0.9339623, g: 0.066082224, b: 0.066082224, a: 1}
+  offsetColor: {r: 0.6462264, g: 1, b: 0.8156158, a: 1}
   id: 0
-  hightLight: {fileID: 0}
   _renderer: {fileID: 3100118400956349982}
   player: {fileID: 0}
 --- !u!61 &6860546837365454033

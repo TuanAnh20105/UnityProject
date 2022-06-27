@@ -245,7 +245,7 @@ public class Algorithm : MonoBehaviour
     {
         for (int y = 0; y < GridManager.instance.hight; y++)
         {
-            if (matrixClone[column, y] != 0)
+            if (matrixClone[column, y] != 0 && y !=0)
             {
                 return new Vector2(column, y);
             }

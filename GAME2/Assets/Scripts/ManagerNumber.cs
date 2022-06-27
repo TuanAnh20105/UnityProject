@@ -38,6 +38,7 @@ public class ManagerNumber : MonoBehaviour
     public int idTemp = 0;
     [TextArea(5,7)]
     public string test= "";
+    bool check = false;
     private void Awake()
     {
         instance = this;
@@ -210,7 +211,7 @@ public class ManagerNumber : MonoBehaviour
                         GridManager.instance.matrix[column, i] = listNumsInCol[0].id;
                         //listNumsInCol[0].transform.DOMove(new Vector2(column, i), 0.2f).SetEase(Ease.Flash).OnComplete(() =>
                         //{
-                            
+                        //    //CheckNumber(listNumsInCol[0]);
                         //});
                         listNumsInCol[0].transform.position = new Vector2(column, i);
                     }

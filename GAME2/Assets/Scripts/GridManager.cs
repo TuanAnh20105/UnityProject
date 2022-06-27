@@ -63,9 +63,9 @@ public class GridManager : MonoBehaviour
     public void Infinity()
     {
         width = 5;
-        hight = 7;
-        cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)hight / 2 - 1.9f, -10);
+        hight = 8;
+        cam.transform.position = new Vector3((float)width / 2 - 0.5f, (float)hight / 2 - 0.9f, -10);
         Camera a = cam.GetComponent<Camera>();
-        a.orthographicSize = 6;
+        a.orthographicSize = 5.5f;
     }
 }

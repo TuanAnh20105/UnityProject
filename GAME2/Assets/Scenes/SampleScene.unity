@@ -11652,6 +11652,7 @@ MonoBehaviour:
   btnTitle: {fileID: 1677094875}
   btnButtom: {fileID: 1492822045}
   txtScore: {fileID: 1143850}
+  score: 0
   txtTime: {fileID: 1995074297}
 --- !u!1 &1054739140
 GameObject:
@@ -11820,7 +11821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1061872812
 Transform:
   m_ObjectHideFlags: 0
