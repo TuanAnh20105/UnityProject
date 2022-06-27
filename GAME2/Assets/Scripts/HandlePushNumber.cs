@@ -9,15 +9,18 @@ public class HandlePushNumber
     public bool checkPush = true;
     public bool spawnNumber = true;
     public bool checkLastCol = true;
+    public bool gameOver = false;
     Vector2 temp;
-    public void SpawnNumber(ManagerNumber managerNumber)
+    public void SpawnNumber(ManagerNumber managerNumber, PlayerController player)
     {
         if (spawnNumber == true)
         {
             if(managerNumber.list.Count > 34)
             {
-                Debug.Log("Da thua ");
-                Time.timeScale = 0;
+                ManagerGame.instance.GameOver(player);
+                player.SetState(PlayerController.State.block);
+                ManagerGame.instance.gameOver = true;
+                spawnNumber = false;
                 return;
             }
             managerNumber.Spawn();
@@ -40,10 +43,7 @@ public class HandlePushNumber
     }
     public void CheckColoume(Number number, PlayerController player)
     {
-        //if(GridManager.instance.matrix[player.touch.temp1, 0]  != 0 && GridManager.instance.matrix[player.touch.temp1, 0] == number.id)
-        //{
-            
-        //}
+
         for (int i = GridManager.instance.hight - 1; i >= 1; i--)
         {
             if (GridManager.instance.matrix[player.touch.temp1, i] == 0 )

@@ -24,7 +24,7 @@ public class CanvasController : MonoBehaviour
     public void SetScore(float x )
     {
         score += x;
-        txtScore.text = "Score:  "+ score.ToString() ;
+        txtScore.text = "Score:  "+ score.ToString();
     }
    
     public void SetTime()

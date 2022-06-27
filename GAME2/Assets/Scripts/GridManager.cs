@@ -38,7 +38,6 @@ public class GridManager : MonoBehaviour
                 id++;
             }
         }
-        
     }
     public void SetMatrixZero()
     {

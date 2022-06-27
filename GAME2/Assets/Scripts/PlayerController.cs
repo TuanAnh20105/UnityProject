@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         if(check == true)
         {
             HandleRequest();
-        }
+        } Debug.Log(state);
     }
     public void HandleRequest()
     {
@@ -55,8 +55,11 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.spawnNumber:
-                handlePush.SpawnNumber(managerNumber);
-                SetState(State.touch);
+                handlePush.SpawnNumber(managerNumber, this);
+                if (ManagerGame .instance.gameOver == false)
+                {
+                    SetState(State.touch);
+                }
                 break;  
             case State.touch:
                 if(Input.GetMouseButtonDown(0))
@@ -114,6 +117,7 @@ public class PlayerController : MonoBehaviour
 
     public void StartGame()
     {
+        ManagerGame.instance.gameOver = false;
         handlePush.spawnNumber = true;
         SetState(State.startGame);
     }    
@@ -137,5 +141,11 @@ public class PlayerController : MonoBehaviour
     {
         handlePush.spawnNumber = true;
         SetState(State.spawnNumber);
+    }
+
+    public void RestartGame()
+    {
+        managerNumber.list.Clear();
+        
     }
 }

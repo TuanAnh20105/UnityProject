@@ -65,8 +65,6 @@ public class Algorithm : MonoBehaviour
         GetElementLastInCol();
         SpawnNumberLastColumn();
     }
-
-    // ReSharper disable Unity.PerformanceAnalysis
     private void SpawnNumberLastColumn()
     {
         for (int j = 0; j < listNumberLastInColClone.Count; j++)
@@ -114,7 +112,8 @@ public class Algorithm : MonoBehaviour
             managerNumber.ran = firstRan+2;
             return;
         }
-        Debug.Log("ran" + managerNumber.ran);
+        Handle();
+        
     }
     
     private void CheckNumberWillSpawn()
