@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     public enum State
     {
-       block, None, startGame,playGame,spawnNumber,touch,pushNumber,handleNumber, menu,stop,quit, destroy, swap
+       block, None, startGame,playGame,spawnNumber,touch,pushNumber,handleNumber, menu,stop,quit, destroy, swap, doingMerge
     }
     private State state;
     public StartGame startGame = new StartGame();
@@ -81,7 +81,6 @@ public class PlayerController : MonoBehaviour
 
             case State.handleNumber:
                 managerNumber.listSpawn.Clear();
-                
                 handleMix.HandleMix(ManagerNumber.instance.number,this);
                 if (ManagerNumber.instance.find == false)
                 {
@@ -89,7 +88,15 @@ public class PlayerController : MonoBehaviour
                     SetState(State.spawnNumber);
                 }
                 break;
-
+            case State.doingMerge:
+                managerNumber.CheckListTemp(this);
+                if (managerNumber.doneMerge == true)
+                {
+                    handlePush.spawnNumber = true;
+                    SetState(State.spawnNumber);
+                    managerNumber.doneMerge = false;
+                }
+                break;
             case State.destroy:
                 destroy.DestoyNumber(this, managerNumber);
                 if (destroy.checkDestroy == true)

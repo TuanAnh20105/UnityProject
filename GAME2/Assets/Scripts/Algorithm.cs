@@ -87,11 +87,11 @@ public class Algorithm : MonoBehaviour
         CheckNumberWillSpawn();
     
     }
-    public void AlgorithmNumber(ManagerNumber managerNumber)
+    public void AlgorithmNumber(ManagerNumber managerNumber,PlayerController player)
     {
         if (managerNumber.idTemp > block)
         {
-            managerNumber.UpdateNumberBlock(firstRan);
+            managerNumber.UpdateNumberBlock(firstRan,player);
             lastRan += 1;
             firstRan += 1;
             block = managerNumber.idTemp;           

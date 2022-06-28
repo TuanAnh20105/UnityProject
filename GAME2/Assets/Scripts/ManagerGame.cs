@@ -23,7 +23,7 @@ public class ManagerGame : MonoBehaviour
 
     }
 
-    public void ResumeGame()
+    public void ResumeGame(PlayerController player)
     {
         ManagerNumber.instance.ListTemp.Clear();
         for (int i = 0; i < ManagerNumber.instance.list.Count; i++)
@@ -37,7 +37,7 @@ public class ManagerGame : MonoBehaviour
                 ManagerNumber.instance.list[i].SetTxtNumber(Mathf.Pow(2, ManagerNumber.instance.list[i].id).ToString());
             }
         }
-        ManagerNumber.instance.CheckListTemp();
+        ManagerNumber.instance.CheckListTemp(player);
     }
     public void Replay()
     {

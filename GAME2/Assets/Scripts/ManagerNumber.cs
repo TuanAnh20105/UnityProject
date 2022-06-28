@@ -2,13 +2,14 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class ManagerNumber : MonoBehaviour
 {
-    //public List<GameObject> listNumber;
     public List<GameObject> listObject;
     public List<Sprite> listSprite = new List<Sprite>();
     public List<Number> list;
@@ -43,6 +44,9 @@ public class ManagerNumber : MonoBehaviour
     [SerializeField] private bool checkUpdatePos = false;
     private bool duplicateCol = false;
     private bool checkUpdateList = true;
+    public bool DoingMerge = false;
+    public int z = 0;
+    public bool doneMerge = false;
     private void Awake()
     {
         instance = this;
@@ -69,7 +73,37 @@ public class ManagerNumber : MonoBehaviour
         }
         return null;
     }
-    // ReSharper disable Unity.PerformanceAnalysis
+    public enum State
+    {
+        Find , UpdateNode , DelelteNode , UpdateListNode , Spawn , checkListTemp,
+    }
+    private State state;
+    public void SetState( State state)
+    {
+        this.state = state;
+    }
+    public void Handle(Number number , PlayerController player)
+    {
+        Debug.Log(state);
+        switch (state)
+        {
+            case State.Find:
+                break;
+            case State.UpdateNode:
+                UpdateNode(number,player);
+                break;
+
+            case State.DelelteNode:
+                DeleteAllNodeMix(player);
+                break;
+            case State.UpdateListNode:
+                UpdateListNumber(player);
+                break;
+            case State.checkListTemp:
+                CheckListTemp(player);
+                break;
+        }
+    }
     public void Spawn()
     {
         CreateMatrixVisit();
@@ -95,15 +129,18 @@ public class ManagerNumber : MonoBehaviour
         ListTemp.Clear();
         checkUpdateList = true;
     }
-    public void CheckNumber(Number number )
+    public void CheckNumber(Number number ,PlayerController player)
     {
         CheckNumbersMix(number);
         if (listIndex.Count > 0)
         {
-            UpdateNode(number);
-            DeleteAllNodeMix();
-            UpdateListNumber();
-            CheckListTemp();
+            SetState(State.UpdateNode);
+            Handle(number,player);
+            //UpdateNode(number);
+            //DeleteAllNodeMix();
+            //UpdateListNumber();
+            //StartCoroutine(Test());
+            //CheckListTemp();
         }
         else
         {
@@ -114,7 +151,7 @@ public class ManagerNumber : MonoBehaviour
     {
         for (int i = list.Count - 1; i >= 0; i--)
         {
-            if (Vector2.Distance(number.transform.position, list[i].transform.position) <= 1.1f
+            if (Vector2.Distance(number.transform.position, list[i].transform.position) <= 1f
                 && number.id == list[i].id && list.Count > 1 && number.ma != list[i].ma)
             {
                 if(matrixVisit[(int)list[i].transform.position.x,(int)list[i].transform.position.y] == 0)
@@ -202,60 +239,96 @@ public class ManagerNumber : MonoBehaviour
             matrixVisit[x, y] = 1;
         }
     }
-    public void UpdateListNumber()
+    public void UpdateListNumber(PlayerController player)
     {
-        {
-            for( int i = 0; i < listColumn.Count;i++)
-            {            
-                GetElementsInColumn(listColumn[i],listRow[i]);
-                for(int j = 0; j < listNumsInCol.Count;j++)
-                {
-                    UpdateNodeInColumn(listColumn[i], listRow[i]);
-                }    
-            }
-             listIndex.Clear();
-             listColumn.Clear();
-             listRow.Clear();
-             find = false;
-             checkUpdateList = false;
-        }
-        
-        
-    }
-    public void CheckListTemp()
-    {
-        if (ListTemp.Count != 0)
-        {
-            for (int i = 0; i < ListTemp.Count; i++)
+        for( int i = 0; i < listColumn.Count;i++)
+        {            
+            GetElementsInColumn(listColumn[i],listRow[i]);
+            for(int j = 0; j < listNumsInCol.Count;j++)
             {
-                checkAdd = true;
-                CheckNumber(ListTemp[i]);
-            }
-            ListTemp.Clear();
+                UpdateNodeInColumn(listColumn[i], listRow[i],player);
+            }    
         }
+        listIndex.Clear();
+        listColumn.Clear();
+        listRow.Clear();
 
-        // if (ListTemp.Count == 0)
-        // {
-        //     checkUpdateList = true;
-        //     UpdateListNumber();
-        // }
-        
-        checkUpdatePos = false;
-        
     }
-    public void DeleteAllNodeMix()
-    {        
+    public void CheckListTemp(PlayerController player)
+    {
+        if (DoingMerge == true)
+        {
+            DoingMerge = false;
+            z = 0;
+            if (ListTemp.Count != 0)
+            {
+                for (int i = 0; i < ListTemp.Count; i++)
+                {
+                    checkAdd = true;
+                    CheckNumber(ListTemp[i], player);
+                    if (find == true)
+                    {
+                        i = 0;
+                    }
+                }
+                //ListTemp.Clear();
+              
+            }
+            
+                find = false;
+                SetState(State.Find);
+                doneMerge = true;
+            
+           
+        }
+    }
+    public void DeleteAllNodeMix(PlayerController player)
+    {      
+        // if (ListTemp.Count != 0)
+        // {
+        //     for (int i = 0; i < listIndex.Count; i++)
+        //     {
+        //         for (int j = 0; j < ListTemp.Count; j++)
+        //         {
+        //             if (list[listIndex[i]].ma == ListTemp[j].ma)
+        //             {
+        //                 ListTemp.RemoveAt(j);
+        //             }
+        //         }
+        //     }
+        // }
         for(int i = 0; i < listIndex.Count; i ++)
         {
-            //number.CheckDirectEffect(list[listIndex[i]]);
             list.RemoveAt(listIndex[i]);
             Destroy(listObject[listIndex[i]]);
             listObject.RemoveAt(listIndex[i]);
         }
+        SetState(State.UpdateListNode);
+        Handle(number,player);
     }
-    public void UpdateNode(Number number)
+    public void UpdateNode(Number number,PlayerController player)
     {
-        ListTemp.Add(number);
+        if (ListTemp.Count == 0)
+        {
+            ListTemp.Add(number);
+        }
+        else
+        {
+            bool doulicateListTemp = false;
+            for (int i = 0; i < ListTemp.Count; i++)
+            {
+                if (number.ma == ListTemp[i].ma)
+                {
+                    doulicateListTemp = true;
+                    break;
+                }
+            }
+
+            if (doulicateListTemp == false)
+            {
+                ListTemp.Add(number);
+            }
+        }
         if (CheckUpdateNode1 == true)
         {
             int count = listIndex.Count;
@@ -269,52 +342,70 @@ public class ManagerNumber : MonoBehaviour
             number.SetTxtNumber(Mathf.Pow(2, number.id).ToString());
             CheckUpdateNode1 = false;
             CanvasController.instance.SetScore(Mathf.Pow(2, number.id));
+            SetState(State.DelelteNode);
+            Handle(number,player);
         }
     }
-    public void UpdateNodeInColumn(int column, int row1)
+    public void UpdateNodeInColumn(int column, int row1 , PlayerController player)
     {
         bool dublicate = false;
-        int x = listNumsInCol.Count; 
-        while (listNumsInCol.Count != 0)
+
         {
-            for (int i = GridManager.instance.hight - 1; i >= 0; i--)
+            int x = listNumsInCol.Count;
+            while (listNumsInCol.Count != 0)
             {
-                if (GridManager.instance.matrix[column, i] == 0)
+                for (int i = GridManager.instance.hight - 1; i >= 0; i--)
                 {
-                    int row = (int)listNumsInCol[0].transform.position.x;
-                    int column1 = (int)listNumsInCol[0].transform.position.y;
-                    if (column1 <= row1)
+                    if (GridManager.instance.matrix[column, i] == 0)
                     {
-                        if (ListTemp.Count == 0)
+                        int row = (int)listNumsInCol[0].transform.position.x;
+                        int column1 = (int)listNumsInCol[0].transform.position.y;
+                        if (column1 <= row1)
                         {
-                            ListTemp.Add(listNumsInCol[0]);
-                        }
-                        else
-                        {
-                            for (int j = 0; j < ListTemp.Count; j++)
-                            {
-                                if (listNumsInCol[0].ma == ListTemp[j].ma)
-                                {
-                                    dublicate = true;
-                                    break;
-                                }
-                            }
-                            if (dublicate == false)
+                            if (ListTemp.Count == 0)
                             {
                                 ListTemp.Add(listNumsInCol[0]);
                             }
+                            else
+                            {
+                                for (int j = 0; j < ListTemp.Count; j++)
+                                {
+                                    if (listNumsInCol[0].ma == ListTemp[j].ma)
+                                    {
+                                        dublicate = true;
+                                        break;
+                                    }
+                                }
+                                if (dublicate == false)
+                                {
+                                    ListTemp.Add(listNumsInCol[0]);
+                                }
+                            }
+                            GridManager.instance.matrix[row, column1] = 0;
+                            GridManager.instance.matrix[column, i] = listNumsInCol[0].id;
+                            Vector3 temp = new Vector3(column, i, 0);
+                            if (listNumsInCol[0].transform.position != temp)
+                            {
+                                player.SetState(PlayerController.State.doingMerge);
+                                listNumsInCol[0].transform.DOMove(temp, .3f).SetEase(Ease.Flash).OnComplete(() =>
+                                {
+                                    z++;
+                                    if (z == x)
+                                    {
+                                        DoingMerge = true;
+                                        z = 0;
+                                    }
+                                });
+                            }
+                            //listNumsInCol[0].transform.position = new Vector2(column, i);
                         }
-
-                        GridManager.instance.matrix[row, column1] = 0;
-                        GridManager.instance.matrix[column, i] = listNumsInCol[0].id;
-                        listNumsInCol[0].transform.position = new Vector2(column, i);
+                        listNumsInCol.RemoveAt(0);
+                        break;
                     }
-                    listNumsInCol.RemoveAt(0);
-                    break;
                 }
             }
+            CreateMatrixVisit();
         }
-        CreateMatrixVisit();
     }
     public void GetElementsInColumn(float x, float y)
     {
@@ -326,7 +417,6 @@ public class ManagerNumber : MonoBehaviour
                 listNumsInCol.Add(list[i]);
             }
         }
-
     }
     public void CheckPosDestroy(int column, Number number)
     {
@@ -369,11 +459,10 @@ public class ManagerNumber : MonoBehaviour
     {
         for (int i = 0; i < list.Count; i++)
         {
-            CheckNumber(list[i]);
+            CheckNumber(list[i],player);
         }
     }
-    
-    public void UpdateNumberBlock(int idBlock)
+    public void UpdateNumberBlock(int idBlock , PlayerController player)
     {
         for(int i = 0; i < list.Count;i++)
         {
@@ -383,7 +472,7 @@ public class ManagerNumber : MonoBehaviour
                 list[i].id += 1;
                 list[i].SetTxtNumber(Mathf.Pow(2, list[i].id).ToString());
                 list[i].transform.name = Mathf.Pow(2, list[i].id).ToString();
-                CheckNumber(list[i]);
+                CheckNumber(list[i],player);
             }
         }
     }
