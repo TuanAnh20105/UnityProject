@@ -6,7 +6,6 @@ public class StartGame
 {
     // Start is called before the first frame update
     
-    
     public void GameStart()
     {   
         GridManager.instance.GenerateGrid();       

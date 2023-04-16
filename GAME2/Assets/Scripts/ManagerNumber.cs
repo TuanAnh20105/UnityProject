@@ -19,7 +19,6 @@ public class ManagerNumber : MonoBehaviour
     List<int> listIndex = new List<int>();
     List<int> listColumn = new List<int>();
     List<int> listRow = new List<int>();
-    public List<int> listSpawn = new List<int>();
     public List<Number> listDestroy = new List<Number>();
     bool checkAdd = true;
     public Number temp;
@@ -107,7 +106,7 @@ public class ManagerNumber : MonoBehaviour
     public void Spawn()
     {
         CreateMatrixVisit();
-        //algorithm.AlgorithmNumber(this);
+        //algorithm.AlgorithmNumber(this, player);
         ran = Random.Range(1, 3);
         obj = Instantiate(numberSample, spawnPos.transform.position, spawnPos.transform.rotation);
         number = obj.GetComponent<Number>();
@@ -134,13 +133,12 @@ public class ManagerNumber : MonoBehaviour
         CheckNumbersMix(number);
         if (listIndex.Count > 0)
         {
+            for(int i = 0; i < listIndex.Count;i++)
+            {
+                UpdateMatrix(number, list[listIndex[i]]);
+            }
             SetState(State.UpdateNode);
             Handle(number,player);
-            //UpdateNode(number);
-            //DeleteAllNodeMix();
-            //UpdateListNumber();
-            //StartCoroutine(Test());
-            //CheckListTemp();
         }
         else
         {
@@ -154,32 +152,16 @@ public class ManagerNumber : MonoBehaviour
             if (Vector2.Distance(number.transform.position, list[i].transform.position) <= 1f
                 && number.id == list[i].id && list.Count > 1 && number.ma != list[i].ma)
             {
-                if(matrixVisit[(int)list[i].transform.position.x,(int)list[i].transform.position.y] == 0)
+                if (matrixVisit[(int)list[i].transform.position.x, (int)list[i].transform.position.y] == 0)
                 {
                     find = true;
                     listIndex.Add(i);
-                    UpdateMatrix(number, list[i]);
-                    checkAround(list[i]);
                     CheckUpdateNode1 = true;
                 }
             }
         }
     }
-    public void checkAround(Number number)
-    {
-        for (int i = 0; i < list.Count; i++)
-        {
-            if (Vector2.Distance(number.transform.position, list[i].transform.position) <= 1.1f
-                && number.id == list[i].id && list.Count > 1 && number.ma != list[i].ma 
-                && matrixVisit[(int)list[i].transform.position.x,(int)list[i].transform.position.y] == 0)
-            {
-                listIndex.Add(i);
-                UpdateMatrix(number, list[i]);
-                checkAround(list[i]);
-            }
-        }
-    }
-    public void UpdateMatrix(Number number, Number list)
+    public void UpdateMatrix(Number number, Number list) 
     {
         duplicateCol = false;
         temp1 = (int)number.transform.position.x;
@@ -284,19 +266,7 @@ public class ManagerNumber : MonoBehaviour
     }
     public void DeleteAllNodeMix(PlayerController player)
     {      
-        // if (ListTemp.Count != 0)
-        // {
-        //     for (int i = 0; i < listIndex.Count; i++)
-        //     {
-        //         for (int j = 0; j < ListTemp.Count; j++)
-        //         {
-        //             if (list[listIndex[i]].ma == ListTemp[j].ma)
-        //             {
-        //                 ListTemp.RemoveAt(j);
-        //             }
-        //         }
-        //     }
-        // }
+
         for(int i = 0; i < listIndex.Count; i ++)
         {
             list.RemoveAt(listIndex[i]);
@@ -308,27 +278,21 @@ public class ManagerNumber : MonoBehaviour
     }
     public void UpdateNode(Number number,PlayerController player)
     {
-        if (ListTemp.Count == 0)
-        {
-            ListTemp.Add(number);
-        }
-        else
-        {
-            bool doulicateListTemp = false;
-            for (int i = 0; i < ListTemp.Count; i++)
-            {
-                if (number.ma == ListTemp[i].ma)
-                {
-                    doulicateListTemp = true;
-                    break;
-                }
-            }
+            //bool doulicateListTemp = false;
+            //for (int i = 0; i < ListTemp.Count; i++)
+            //{
+            //    if (number.ma == ListTemp[i].ma)
+            //    {
+            //        doulicateListTemp = true;
+            //        break;
+            //    }
+            //}
 
-            if (doulicateListTemp == false)
-            {
-                ListTemp.Add(number);
-            }
-        }
+            //if (doulicateListTemp == false)
+            //{
+            //    ListTemp.Add(number);
+            //}
+        
         if (CheckUpdateNode1 == true)
         {
             int count = listIndex.Count;

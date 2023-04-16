@@ -3,14 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandlePushNumber
+public class HandlePushNumber : MonoBehaviour
 {
     // Start is called before the first frame update
     public bool checkPush = true;
     public bool spawnNumber = true;
     public bool checkLastCol = true;
     public bool gameOver = false;
-    Vector2 temp;
+    public Vector2 temp;
+    public static HandlePushNumber instance;
+    void Awake()
+    {
+        instance = this;
+    }
+    
     public void SpawnNumber(ManagerNumber managerNumber, PlayerController player)
     {
         if (spawnNumber == true)
@@ -46,7 +52,7 @@ public class HandlePushNumber
 
         for (int i = GridManager.instance.hight - 1; i >= 1; i--)
         {
-            if (GridManager.instance.matrix[player.touch.temp1, i] == 0 )
+            if (GridManager.instance.matrix[player.touch.temp1, i] == 0)
             {
                 temp = new Vector2(player.touch.temp1, i);
                 GridManager.instance.matrix[player.touch.temp1, (int)temp.y] = number.id;

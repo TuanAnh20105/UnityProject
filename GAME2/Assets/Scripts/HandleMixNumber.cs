@@ -12,7 +12,7 @@ public class HandleMixNumber
         }
         else
         {
-            player.handlePush.spawnNumber = true;
+            HandlePushNumber.instance.spawnNumber = true;
             player.SetState(PlayerController.State.spawnNumber);
         }
     }

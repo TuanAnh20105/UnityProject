@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
     }
     private State state;
     public StartGame startGame = new StartGame();
-    public HandlePushNumber handlePush = new HandlePushNumber();
     public TouchWorld touch = new TouchWorld();
     public HandleMixNumber handleMix = new HandleMixNumber();
     public DestroyNumber destroy;
@@ -36,7 +35,7 @@ public class PlayerController : MonoBehaviour
         if(check == true)
         {
             HandleRequest();
-        } Debug.Log(state);
+        } 
     }
     public void HandleRequest()
     {
@@ -55,7 +54,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.spawnNumber:
-                handlePush.SpawnNumber(managerNumber, this);
+                HandlePushNumber.instance.SpawnNumber(managerNumber, this);
                 if (ManagerGame .instance.gameOver == false)
                 {
                     SetState(State.touch);
@@ -75,16 +74,15 @@ public class PlayerController : MonoBehaviour
             case State.pushNumber:
                 if(checkPushNumber == true)
                 {
-                    handlePush.HandlePush(touch,this);
+                    HandlePushNumber.instance.HandlePush(touch,this);
                 }              
                 break;
 
             case State.handleNumber:
-                managerNumber.listSpawn.Clear();
                 handleMix.HandleMix(ManagerNumber.instance.number,this);
                 if (ManagerNumber.instance.find == false)
                 {
-                    handlePush.spawnNumber = true;
+                    HandlePushNumber.instance.spawnNumber = true;
                     SetState(State.spawnNumber);
                 }
                 break;
@@ -92,7 +90,7 @@ public class PlayerController : MonoBehaviour
                 managerNumber.CheckListTemp(this);
                 if (managerNumber.doneMerge == true)
                 {
-                    handlePush.spawnNumber = true;
+                    HandlePushNumber.instance.spawnNumber = true;
                     SetState(State.spawnNumber);
                     managerNumber.doneMerge = false;
                 }
@@ -125,7 +123,7 @@ public class PlayerController : MonoBehaviour
     public void StartGame()
     {
         ManagerGame.instance.gameOver = false;
-        handlePush.spawnNumber = true;
+        HandlePushNumber.instance.spawnNumber = true;
         SetState(State.startGame);
     }    
     public void Destroy()
@@ -146,7 +144,7 @@ public class PlayerController : MonoBehaviour
     }
     public void spawnNumber()
     {
-        handlePush.spawnNumber = true;
+        HandlePushNumber.instance.spawnNumber = true;
         SetState(State.spawnNumber);
     }
 
